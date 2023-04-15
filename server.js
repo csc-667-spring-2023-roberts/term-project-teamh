@@ -8,7 +8,7 @@ const express = require("express");
 require("dotenv").config();
 
 const app = express();
-const testRoutes = require("./routes/test/index.js");
+const testRoutes = require("./backend/routes/test/index.js");
 
 app.use("/test", testRoutes);
 
