@@ -4,7 +4,13 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
 const express = require("express");
+
+require("dotenv").config();
+
 const app = express();
+const testRoutes = require("./routes/test/index.js");
+
+app.use("/test", testRoutes);
 
 app.use(morgan("dev"));
 app.use(express.json());
