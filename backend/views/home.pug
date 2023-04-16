@@ -4,3 +4,16 @@ block content
   h1= title
 
   p= message
+
+block chat
+  div#container 
+  form(id="input-form")
+    labe(for="message") Message:
+    input#message(type="text" name="message")
+    br
+    br
+    input(type="submit" value="Send")
+  div#messages
+    
+
+  
