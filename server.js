@@ -43,17 +43,52 @@ app.use((request, response, next) => {
   next(createError(404));
 });
 
+let cards = [];
+
+for (let i = 0; i < 10; i++) {
+  let card = {
+    value : i,
+    color : 'blue',
+    src : "/images/blue_" + i + ".png"
+  }
+  console.log(card);
+  cards.push(card);
+}
+
+console.log(cards);
+
 const wss = new WebSocket.Server({ port: 3001 });
 wss.on('connection', ws => {
+  message = {
+    event: "socket",
+    data: "connection established"
+  }
   console.log('New client connected!')
-  ws.send('connection established')
+  message = JSON.stringify(message)
+  ws.send(message)
   ws.on('open', () => console.log('Connection Open'))
   ws.on('close', () => console.log('Client has disconnected!'))
   ws.on('message', data => {
     wss.clients.forEach(client => {
       console.log(`message to all client: ${data}`)
 			if (client.readyState === WebSocket.OPEN) {
-				client.send(`${data}`)
+				
+        message = {
+          event: "chat",
+          data: `${data}`
+        }
+        message = JSON.stringify(message)
+        client.send(message)
+
+        num = Math.floor(Math.random() * 10)
+        console.log(num)
+        message = {
+          event: 'draw',
+          data: cards[num]
+        }
+        message = JSON.stringify(message)
+        console.log('message' + message);
+        client.send(message)
 			}
     })
   })
