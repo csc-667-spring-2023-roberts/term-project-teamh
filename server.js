@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
 const express = require("express");
-
+var session = require('express-session');
 require("dotenv").config();
 
 const app = express();
@@ -14,6 +14,14 @@ app.use("/test", testRoutes);
 
 const WebSocket = require('ws');
 
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session(
+  {
+    secret: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    saveUninitialized: false,
+    resave: false,
+    cookie: { maxAge: oneDay },
+  }));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -4,6 +4,8 @@ html
     title= title
     link(rel='stylesheet' href='/stylesheets/home.css')
   body
+    block logout
+      a(href="/logout") logout 
     block content
     block chat
     script(src='/scripts/bundle.js')
