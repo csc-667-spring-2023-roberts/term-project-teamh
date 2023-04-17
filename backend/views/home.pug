@@ -1,20 +1,32 @@
 extends layout
 
-block content
+//-
+  block content
   h1= title
 
   p= message
 
 block chat
-  .home-search 
-  div#container 
-  form(id="input-form")
-    labe(for="message") Message:
-    input#message(type="text" name="message")
-    br
-    br
-    input(type="submit" value="Send")
-  div#messages
-    
+  div.container 
+    header.header UNO
+      a(href="/logout") logout 
+    main.main
+      h1 Main Content 
+      p game room 
+    aside.sidebar 
+      h2 Chat       
+      form(id="input-form")
+        labe(for="message") Message:
+        input#message(type="text" name="message")
+        br
+        br
+        input(type="submit" value="Send")
+
+        div#chatbox
+    footer.footer  &copy; Footer Example
+
+
+  script(src='/scripts/bundle.js')   
+
 
   

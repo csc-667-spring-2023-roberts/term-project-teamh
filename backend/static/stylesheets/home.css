@@ -1,3 +1,78 @@
-body {
+/* body {
     background-color: rgba(0, 0, 255, 0.1);
 }
+
+
+#chatbox {
+    text-align: left;
+    margin: 0 auto;
+    margin-bottom: 25px;
+    padding: 10px;
+    background: #fff;
+    height: 300px;
+    width: 530px;
+    border: 1px solid #a7a7a7;
+    overflow: auto;
+    border-radius: 4px;
+    border-bottom: 4px solid #a7a7a7;
+  } */
+
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    border: 0 none;
+    padding: 0;
+    background-color: #fff;
+    /* height:100vh; */
+  }
+  
+  
+  ul {
+    padding-left: 1em;
+  }
+  
+  h1, h2, p {
+    margin: 0 0 .8em 0;
+  }
+  
+  .container {
+    /* max-width: 940px; */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: 50px auto 50px;
+    grid-gap: 7px;
+    width: 100vw;
+    height: 100vh;
+    border-style: solid;
+  }
+  
+  .header {
+    font-size: 1em;
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: -1;
+  }
+  
+  .container > * {
+    background-color: royalblue;
+    color: white;
+    border-radius: 3px;
+    padding: 16px;
+  }
+  
+  .footer {
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: -1;
+  }
+  
+  @media (max-width: 800px) {
+    .container {
+      grid-template-columns: none;
+    }
+  }

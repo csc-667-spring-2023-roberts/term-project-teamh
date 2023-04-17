@@ -3,7 +3,7 @@ console.log("Hello from a bundled asset.");
 const webSocket = new WebSocket('ws://localhost:3001/');
 webSocket.onmessage = (event) => {
   console.log(event)
-  document.getElementById('messages').innerHTML += 'Message from server: ' + event.data + "<br>";
+  document.getElementById('chatbox').innerHTML += 'Message from server: ' + event.data + "<br>";
 };
 webSocket.addEventListener("open", () => {
   console.log("We are connected");
