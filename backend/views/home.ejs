@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('partials/head'); %>
+</head>
+
+<body>
+  <div class="container">
+    <%- include('partials/header'); %>
+
+      <main class="main">
+        <h1>Main Content </h1>
+        <p>game room </p>
+        <div id="cardarea"></div>
+      </main>
+      <aside class="sidebar">
+        <h2>Chat </h2>
+        <form id="input-form">
+          <labe for="message">Message:</labe><input id="message" type="text" name="message"><br><br><input type="submit"
+            value="Send">
+          <div id="chatbox"></div>
+        </form>
+      </aside>
+      <footer class="footer">
+        <%- include('partials/footer'); %>
+      </footer>
+  </div>
+  <script src="/scripts/uno.js">  </script>
+</body>
+
+</html>

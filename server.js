@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.set("views", path.join(__dirname, "backend", "views"));
-app.set("view engine", "pug");
+app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "backend", "static")));
 
 const rootRoutes = require("./backend/routes/root");
@@ -72,7 +72,7 @@ wss.on('connection', ws => {
     wss.clients.forEach(client => {
       console.log(`message to all client: ${data}`)
 			if (client.readyState === WebSocket.OPEN) {
-				
+    
         message = {
           event: "chat",
           data: `${data}`
