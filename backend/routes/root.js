@@ -31,10 +31,7 @@ router.get("/", isAuthenticated, (request, response) => {
 
 router.get('/', function (request, response) {
   const name = "person";
-  response.render("home", {
-      title: "Hi World!",
-      user: request.session.user,
-      message: "Our first template.",
+  response.render("loggedOutHome", {
   });
 })
 
