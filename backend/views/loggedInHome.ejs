@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/styles/loggedInHome.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <%- include('partials/header') %>
+      <main class="loggedin-container">
+        <aside class="left-sidebar">
+          <div>Friends</div>
+          <div>Stats</div>
+        </aside>
+        <div class="loggedin-content">
+          <ul class="nav-list">
+            <li><a href="/createGame">Create a game</a></li>
+            <li><a href="/joinGame">Join a game</a></li>
+          </ul>
+
+          <div class="content-wrapper">
+            <div class="current-games">current-games</div>
+            <div class="chat-wrapper">
+              <h2>Chat</h2>
+              <form id="input-form">
+                <label for="message">Message:</label
+                ><input
+                  id="message"
+                  type="text"
+                  name="message"
+                /><br /><br /><input type="submit" value="Send" />
+                <div id="chatbox"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer"><%- include('partials/footer') %></footer>
+    </div>
+    <script src="/scripts/uno.js"></script>
+  </body>
+</html>

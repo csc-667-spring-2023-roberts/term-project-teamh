@@ -89,11 +89,12 @@ p {
 .nav-list {
   list-style-type: none;
   padding: 0;
-  display: flex; /* Add this line */
+  display: flex;
+  justify-content: center;
 }
 
 .nav-list li {
-  margin: 0 1rem; /* Update this line */
+  margin: 0 1rem;
 }
 
 .content-wrapper {
@@ -111,6 +112,28 @@ p {
 
 .current-games {
   flex: 7;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+
+/* logged in page styles */
+.loggedin-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.left-sidebar {
+  flex: 3;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.loggedin-content {
+  flex: 7;
+  padding: 1rem;
+  border: 1px solid #ccc;
+}
+.chat-wrapper {
   padding: 1rem;
   border: 1px solid #ccc;
 }
