@@ -21,18 +21,31 @@ router.use((request, response, next) => {
 router.get("/", isAuthenticated, (request, response) => {
 
   const name = "person";
-    response.render("home", {
-        title: "Hi World!",
-        message: "Our first template.",
-    });
+  response.render("home", {
+      title: "Hi World!",
+      user: request.session.user,
+      message: "Our first template.",
+  });
+
 });
 
 router.get('/', function (request, response) {
-  response.redirect("login")
+  const name = "person";
+  response.render("home", {
+      title: "Hi World!",
+      user: request.session.user,
+      message: "Our first template.",
+  });
 })
 
 router.get('/login', function (request, response) {
   response.render("login", {
+  });
+})
+
+router.get('/signup', function (request, response) {
+  response.render("signup", {
+    title: "Hi World!",
   });
 })
 
