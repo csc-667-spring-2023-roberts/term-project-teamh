@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"> 
+
+<head>
+    <title> <%= searchGame%> </title>  
+    <link rel="stylesheet" href="/styles/home.css" />
+    <main> 
+</head>
+<body> 
+    <div>
+    <form id="search-game" action=" /searchGame" method = "post"></form>
+    <label for="Search"> </label> <input id="gameID" type="text" name="user" <br>
+    <label for = "Password"> </label> <input pass= "gamePass" type = "password" <br> 
+   
+    <input type= "submit">
+    <label for="message">Message:</label
+        ><input
+          id="message"
+          type="text"
+          name="message"
+
+    /><br /><br /><input type="submit" value="Send" />
+    <div id="chatbox"></div>
+  </form>
+</div>
+
+</main>
+
+
+<footer class "footer"> <%- include ('partials/footer')></footer>
+<script src="/scripts/uno.js"></script>
+</body>
+</html>
