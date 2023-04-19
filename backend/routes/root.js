@@ -24,25 +24,35 @@ router.use((request, response, next) => {
 router.get("/", isAuthenticated, (request, response) => {
   const name = "person";
   response.render("home", {
-    title: "Hi World!",
+    title: "Welcome to Uno!",
     user: request.session.user,
-    message: "Our first template.",
-  });
+   });
+});
+router.get("/login", (_request, response) => {
+  response.render("login", { title: "Uno Game (Login)" });
 });
 
-router.get("/", function (request, response) {
+router.get("/signUp", (_request, response) => {
+  response.render("signUp", { title: "Uno Game (signUp)" });
+});
+
+router.get("/createGame", (_request, response) => {
+  response.render("createGame", { title: "Create Game" });
+});
+
+router.get("/joinGame", (_request, response) => {
+  response.render("joinGame", { title: "Join Game" });
+});
+
+
+
+router.get("/", function (_request, response) {
   response.render("loggedOutHome", {});
 });
 
-router.get("/login", function (request, response) {
-  response.render("login", {});
-});
 
-router.get("/signup", function (request, response) {
-  response.render("signup", {
-    title: "Hi World!",
-  });
-});
+
+
 
 router.post(
   "/login",
