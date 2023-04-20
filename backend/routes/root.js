@@ -72,7 +72,14 @@ router.post(
       })
     })
   }
-)
+);
+// Root route for rules page
+router.get("/rules", (request, response) => {
+  response.render("rules", {
+    title: "UNO Rules",
+    message: "These are the rules for uno",
+  });
+});
 
 // Logout page
 router.get("/logout", (request, response) => {
