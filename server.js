@@ -7,6 +7,7 @@ const express = require("express");
 var session = require('express-session');
 require("dotenv").config();
 
+const {getCards} = require('./backend/deck.js');
 const app = express();
 const testRoutes = require("./backend/routes/test/index.js");
 
@@ -43,19 +44,14 @@ app.use((request, response, next) => {
   next(createError(404));
 });
 
-let cards = [];
+rooms = [
+  { name: 'room1', host: 'abc', players: [{ name: 'player1' }] },
+  { name: 'room2', host: 'xyz', players: [] },
+]
 
-for (let i = 0; i < 10; i++) {
-  let card = {
-    value : i,
-    color : 'blue',
-    src : "/images/blue_" + i + ".png"
-  }
-  console.log(card);
-  cards.push(card);
-}
+let cards = getCards()
 
-console.log(cards);
+console.log(cards)
 
 const wss = new WebSocket.Server({ port: 3001 });
 wss.on('connection', ws => {

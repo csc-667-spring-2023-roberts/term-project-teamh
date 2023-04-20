@@ -1,31 +1,31 @@
 const express = require("express");
+const url = require('url');
 const router = express.Router();
 
 // middleware to test if authenticated
 function isAuthenticated(req, res, next) {
-  if (req.session.user) next();
-  else next("route");
+  if (req.session.user) next()
+  else next("route")
 }
 
 // a middleware function with no mount path. This code is executed for every request to the router
 router.use((request, response, next) => {
-  console.log("Time:", Date.now());
+  console.log("Time:", Date.now())
   if (!request.session.user) {
-    response.header(
-      "Cache-Control",
-      "private, no-cache, no-store, must-revalidate"
-    );
-    response.header("Expires", "-1");
-    response.header("Pragma", "no-cache");
+    console.log('session timeout')
+    response.header('Cache-Control', 'private, no-cache, no-store, must-revalidate')
+    response.header('Expires', '-1')
+    response.header('Pragma', 'no-cache')
   }
-  next();
-});
+  next()
+})
 
 router.get("/", isAuthenticated, (request, response) => {
-  const name = "person";
+  console.log(rooms)
   response.render("home", {
     title: "Welcome to Uno!",
     user: request.session.user,
+    openrooms: rooms,
    });
 });
 router.get("/login", (_request, response) => {
@@ -62,17 +62,17 @@ router.post(
       if (err) next(err);
 
       // store user information in session, typically a user id
-      request.session.user = request.body.user;
+      request.session.user = request.body.user
 
       // save the session before redirection to ensure page
       // load does not happen before session is saved
       request.session.save(function (err) {
-        if (err) return next(err);
-        response.redirect("/");
-      });
-    });
+        if (err) return next(err)
+        response.redirect("/")
+      })
+    })
   }
-);
+)
 
 // Logout page
 router.get("/logout", (request, response) => {
@@ -86,7 +86,87 @@ router.get("/logout", (request, response) => {
   response.render("logout", {
     title: "Logout",
     message: "Your are logged out",
-  });
-});
+  })
+})
+
+
+// new game
+router.post("/newgame", isAuthenticated, (request, response) => {
+  rooms.push({name:request.body.roomname, host:request.session.user})
+  response.render("waitingroom", {
+    roomname: request.body.roomname,
+    host: request.session.user,
+  })
+})
+router.post("/newgame", (request, response) => {
+  response.redirect('/')
+})
+
+router.get("/joingame", (request, response) => {
+
+  let result = rooms.find(e => {
+    console.log(e)
+    console.log(request.query.room)
+    if (e.name === request.query.room) 
+      console.log('find')
+    return e.name === request.query.room
+  })
+
+  result.players.push({name:request.session.user})
+
+  response.redirect(url.format({
+    pathname: '/waitingroom',
+    query: request.query,
+    protocol: 'http'
+  }))
+})
+
+router.get("/waitingroom", isAuthenticated, (request, response) => {
+
+  let result = rooms.find(e => {
+    console.log(e)
+    console.log(request.query.room)
+    if (e.name === request.query.room) 
+      console.log('find')
+    return e.name === request.query.room
+  })
+  console.log(result)
+  console.log(result.name)
+  console.log(result.host)
+  console.log(result.players)
+  
+  response.render("waitingroom", {
+    roomname: result.name,
+    host: result.host,
+    players: result.players,
+  })
+})
+router.get("/waitingroom", (request, response) => {
+  response.redirect('/')
+})
+
+router.get("/game", isAuthenticated, (request, response) => {
+
+  let result = rooms.find(e => {
+    console.log(e)
+    console.log(request.query.room)
+    if (e.name === request.query.room) 
+      console.log('find')
+    return e.name === request.query.room
+  })
+  console.log(result)
+  console.log(result.name)
+  console.log(result.host)
+  console.log(result.players)
+  
+  response.render("game", {
+    roomname: result.name,
+    host: result.host,
+    players: result.players,
+  })
+})
+router.get("/game", (request, response) => {
+  response.redirect('/')
+})
 
 module.exports = router;

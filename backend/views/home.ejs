@@ -16,21 +16,33 @@
         <li><a href="/signup">signup</a></li>
       </ul>
     <% } %>
-    <main class="main">
-      <h1>Main Content </h1>
-      <p>game room </p>
-      <div id="cardarea"></div>
-    </main>
-    <aside class="sidebar">
-      <h2>Chat </h2>
-      <form id="input-form">
-        <label for="message">Message:</label><input id="message" type="text" name="message"><br><br><input type="submit" value="Send">
-        <div id="chatbox"></div>
-      </form>
-    </aside>
-    <footer class="footer">
-      <%- include('partials/footer') %>
-    </footer>
+      <main class="main">
+        <h1>Uno </h1>
+        <div>
+          <p>Start a new game </p>
+          <form id="start-new-game-form" action="newgame" method="post">
+            <labe for="roomname">Room name:</labe>
+            <input id="roomname" type="text" name="roomname" /><br><br>
+            <input type="submit" value="Create" />
+          </form>
+        </div>
+        <br/>
+
+        <div>
+          Join other games:
+          <% openrooms.forEach(function(room) { %>
+            <li>
+                <%= room.name %> <a href='/joingame?room=<%= room.name %>'>join</a>
+            </li>
+            <% }); 
+          %>
+        </div>
+      </main>
+      <aside class="sidebar">
+      </aside>
+      <footer class="footer">
+        <%- include('partials/footer'); %>
+      </footer>
   </div>
   <script src="/scripts/uno.js">  </script>
 </body>
