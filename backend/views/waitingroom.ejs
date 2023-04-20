@@ -28,9 +28,14 @@
       <aside class="sidebar">
         <h2>Chat </h2>
         <form id="input-form">
-          <labe for="message">Message:</labe><input id="message" type="text" name="message"><br><br><input type="submit"
-            value="Send">
-          <div id="chatbox"></div>
+          <label for="message">Message:</label><input id="message" type="text" name="message"><br><br>
+          <input type="submit" value="Send">
+          <div id="chatbox">
+            <% chats.forEach(function(p) { %>
+                  <%= p.player %> : <%= p.message %> <br/>
+            <% }); 
+            %>
+          </div>
         </form>
       </aside>
       <footer class="footer">

@@ -92,11 +92,19 @@ router.get("/logout", (request, response) => {
 
 // new game
 router.post("/newgame", isAuthenticated, (request, response) => {
-  rooms.push({name:request.body.roomname, host:request.session.user})
-  response.render("waitingroom", {
-    roomname: request.body.roomname,
+  rooms.push({
+    name: request.body.roomname,
     host: request.session.user,
+    players: []
   })
+  console.log('--- newgame ----')
+  console.log(rooms)
+
+  response.redirect(url.format({
+    pathname: '/waitingroom',
+    query: {room: request.body.roomname},
+    protocol: 'http'
+  }))
 })
 router.post("/newgame", (request, response) => {
   response.redirect('/')
@@ -123,22 +131,27 @@ router.get("/joingame", (request, response) => {
 
 router.get("/waitingroom", isAuthenticated, (request, response) => {
 
+  console.log('----waitingroom----')
   let result = rooms.find(e => {
-    console.log(e)
-    console.log(request.query.room)
     if (e.name === request.query.room) 
       console.log('find')
     return e.name === request.query.room
   })
-  console.log(result)
-  console.log(result.name)
-  console.log(result.host)
-  console.log(result.players)
-  
+  let roomchat = roomchats.find(e => {
+    if (e.name === request.query.room) 
+      console.log('find')
+    return e.name === request.query.room
+  })
+  let chats = []
+
+  if (roomchat !== undefined) {
+    chats = roomchat.chats
+  }
   response.render("waitingroom", {
     roomname: result.name,
     host: result.host,
     players: result.players,
+    chats: chats,
   })
 })
 router.get("/waitingroom", (request, response) => {
@@ -154,10 +167,6 @@ router.get("/game", isAuthenticated, (request, response) => {
       console.log('find')
     return e.name === request.query.room
   })
-  console.log(result)
-  console.log(result.name)
-  console.log(result.host)
-  console.log(result.players)
   
   response.render("game", {
     roomname: result.name,

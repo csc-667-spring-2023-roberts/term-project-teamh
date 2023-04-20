@@ -48,6 +48,15 @@ rooms = [
   { name: 'room1', host: 'abc', players: [{ name: 'player1' }] },
   { name: 'room2', host: 'xyz', players: [] },
 ]
+roomchats = [
+  { 
+    name: 'room1', chats: [
+    { 
+      player: 'player1',
+      message: 'hello'
+    }] 
+  },
+]
 
 let cards = getCards()
 
@@ -67,16 +76,22 @@ wss.on('connection', ws => {
   ws.on('message', data => {
     wss.clients.forEach(client => {
       console.log(`message to all client: ${data}`)
-			if (client.readyState === WebSocket.OPEN) {
-    
+      if (client.readyState === WebSocket.OPEN) {
+
+        let payload = JSON.parse(data)
+        console.log(payload)
+
         message = {
           event: "chat",
-          data: `${data}`
+          data: payload.data,
+          user: payload.user
         }
         message = JSON.stringify(message)
         client.send(message)
 
-        num = Math.floor(Math.random() * 10)
+        console.log ('card length: ')
+        console.log(cards.length)
+        num = Math.floor(Math.random() * cards.length)
         console.log(num)
         message = {
           event: 'draw',

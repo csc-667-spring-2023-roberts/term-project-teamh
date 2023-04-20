@@ -4,8 +4,14 @@ const webSocket = new WebSocket('ws://localhost:3001/');
 webSocket.onmessage = (event) => {
   console.log(event)
   message = JSON.parse(event.data)
-  if (message.event == "chat" || message.event == "socket") {
-    document.getElementById('chatbox').innerHTML += 'Message from server: ' + message.data + "<br>"
+  console.log(message)
+
+  if (message.event == "chat") {
+
+    document.getElementById('chatbox').innerHTML += '' + message.user + ': ' + message.data + "<br/>"
+  }
+  if (message.event == "socket") {
+    console.log('connected to socket')
   }
   if (message.event == "draw") {
     console.log("draw")
@@ -20,8 +26,22 @@ webSocket.addEventListener("open", () => {
   console.log("We are connected");
 });
 function sendMessage(event) {
+  console.log('sendmessage')
   var inputMessage = document.getElementById('message')
-  webSocket.send(inputMessage.value)
+
+  let x = sessionStorage.getItem('login')
+  console.log(x);
+
+  let user = JSON.parse(x)
+
+  console.log(inputMessage)
+  const message = {
+    event: "chat",
+    data: inputMessage.value,
+    user: user.username
+  }
+
+  webSocket.send(JSON.stringify(message))
   inputMessage.value = ""
   event.preventDefault();
 }

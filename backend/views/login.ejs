@@ -9,9 +9,22 @@
 <body>
   <form id="login-form" action="/login" method="post">
     <labe for="user">username:</labe><input id="user" type="text" name="user"><br>
-    <labe for="password">Password:</labe><input id="password" type="password" name="password"><br><input type="submit"
-      value="Login">
+    <labe for="password">Password:</labe><input id="password" type="password" name="password"><br>
+    <input type="submit" value="Login" onclick="Login();"/>
   </form>
+
+  <script>
+    function Login() {
+      var username = document.getElementById('user').value;
+      let user = {
+        username: username,
+      }
+      let s = JSON.stringify(user)
+      sessionStorage.setItem('login', s)
+    }
+    sessionStorage.removeItem('login')
+
+  </script>
 </body>
 
 </html>
