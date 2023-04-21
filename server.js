@@ -4,29 +4,27 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 
 const express = require("express");
-var session = require('express-session');
+const session = require('express-session');
 require("dotenv").config();
 
-const { updateRoomChat } = require("./backend/room");
-const {getCards} = require('./backend/deck');
 const app = express();
 const testRoutes = require("./backend/routes/test/index.js");
 const pgSession = require("connect-pg-simple")(session);
 const db = require("./backend/db/connection.js");
 const initSockets = require("./backend/sockets/init.js");
 
-app.use("/test", testRoutes);
-
-const WebSocket = require('ws');
-
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(session(
-  {
-    secret: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-    saveUninitialized: false,
-    resave: false,
-    cookie: { maxAge: oneDay },
-  }));
+const sessionMiddleware = session({
+  store: new pgSession({ 
+    pgPromise: db,
+    createTableIfMissing: true
+  }),
+  secret: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: oneDay },
+});
+    
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,73 +33,22 @@ app.set("views", path.join(__dirname, "backend", "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "backend", "static")));
 
+const PORT = process.env.PORT || 3000;
+
+app.use(sessionMiddleware);
+
+app.use("/test", testRoutes);
 const rootRoutes = require("./backend/routes/root");
 app.use("/", rootRoutes);
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
+const server = initSockets(app, sessionMiddleware);
+server.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
 
 app.use((request, response, next) => {
   next(createError(404));
 });
-
-
-let cards = getCards()
-
-console.log(cards)
-
-const wss = new WebSocket.Server({ port: 3001 });
-wss.on('connection', ws => {
-  message = {
-    event: "socket",
-    data: "connection established"
-  }
-  console.log('New client connected!')
-  message = JSON.stringify(message)
-  ws.send(message)
-  ws.on('open', () => console.log('Connection Open'))
-  ws.on('close', () => console.log('Client has disconnected!'))
-  ws.on('message', data => {
-    let payload = JSON.parse(data)
-    console.log(payload)
-    if (payload.event === 'chat') {
-      updateRoomChat(payload.room, payload.user, payload.data)
-    }
-
-    wss.clients.forEach(client => {
-      console.log(`message to all client: ${data}`)
-      if (client.readyState === WebSocket.OPEN) {
-        if (payload.event === 'chat') {
-          message = {
-            event: "chat",
-            data: payload.data,
-            user: payload.user,
-            room: payload.room,
-          }
-          message = JSON.stringify(message)
-          client.send(message)
-        }
-        if (payload.event === 'draw') {
-          num = Math.floor(Math.random() * cards.length)
-          console.log(num)
-          message = {
-            event: 'draw',
-            data: cards[num]
-          }
-          message = JSON.stringify(message)
-          console.log('message' + message);
-          client.send(message)
-        }
-      }
-    })
-  })
-  ws.onerror = function () {
-    console.log('websocket error')
-  }
-})
 
 if (process.env.NODE_ENV === "development") {
   const livereload = require("livereload");
@@ -118,19 +65,3 @@ if (process.env.NODE_ENV === "development") {
   app.use(connectLiveReload());
 }
 
-app.use(cookieParser());
-
-const sessionMiddleware = session({
-  store: new pgSession({ pgPromise: db }),
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
-});
-
-app.use(sessionMiddleware);
-const server = initSockets(app, sessionMiddleware);
-
-/*server.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
-});*/

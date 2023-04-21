@@ -1,24 +1,20 @@
-console.log("Hello from a bundled asset.");
+var socket = io.connect('http://localhost:3000/');
+socket.on("connect",function() {
+  console.log('Client has connected to the server!');
+});
 
-const webSocket = new WebSocket('ws://localhost:3001/');
-webSocket.onmessage = (event) => {
-  console.log(event)
-  message = JSON.parse(event.data)
-  console.log(message)
-
-  if (message.event === "socket") {
-    console.log('connected to socket')
-  }
-  if (message.event === 'chat') {
-    document.getElementById('chatbox').innerHTML += '<div class=\"chattext\">' + message.user + ': ' + message.data+ "</div>"
-    document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
-  }
-  if (message.event === 'draw') {
-    document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
-  }
-};
-webSocket.addEventListener("open", () => {
-  console.log("We are connected");
+socket.on("chat", function(event) {
+  console.log('chat');
+  console.log(event);
+  message = JSON.parse(event)
+  document.getElementById('chatbox').innerHTML += '<div class=\"chattext\">' + message.user + ': ' + message.data + "</div>"
+  document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
+});
+socket.on("draw", function(event) {
+  console.log('draw');
+  console.log(event);
+  message = JSON.parse(event)
+  document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
 });
 function sendMessage(event) {
   console.log('sendmessage')
@@ -30,7 +26,7 @@ function sendMessage(event) {
 
   let user = JSON.parse(x)
 
-  console.log(inputMessage)
+  console.log(inputMessage.value)
   const message = {
     event: "chat",
     data: inputMessage.value,
@@ -38,7 +34,7 @@ function sendMessage(event) {
     room: room.value
   }
 
-  webSocket.send(JSON.stringify(message))
+  socket.emit('chat', JSON.stringify(message))
   inputMessage.value = ""
   event.preventDefault();
 }
@@ -58,5 +54,5 @@ function drawCard() {
     room: room.value
   }
 
-  webSocket.send(JSON.stringify(message))
+  socket.emit('draw', JSON.stringify(message))
 }

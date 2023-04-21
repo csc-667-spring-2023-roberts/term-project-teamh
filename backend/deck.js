@@ -23,7 +23,7 @@ const getCards = () => {
       color: 'red',
       src: "/images/red_" + i + ".png"
     }
-    console.log(card)
+    //console.log(card)
     if (i==0) {
       cards.push(card)
     } else {
@@ -38,7 +38,7 @@ const getCards = () => {
       color: 'green',
       src: "/images/green_" + i + ".png"
     }
-    console.log(card)
+    //console.log(card)
     if (i==0) {
       cards.push(card)
     } else {
@@ -53,7 +53,7 @@ const getCards = () => {
       color: 'yellow',
       src: "/images/yellow_" + i + ".png"
     }
-    console.log(card)
+    //console.log(card)
     if (i==0) {
       cards.push(card)
     } else {
