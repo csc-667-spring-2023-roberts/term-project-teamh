@@ -11,6 +11,9 @@ const { updateRoomChat } = require("./backend/room");
 const {getCards} = require('./backend/deck');
 const app = express();
 const testRoutes = require("./backend/routes/test/index.js");
+const pgSession = require("connect-pg-simple")(session);
+const db = require("./backend/db/connection.js");
+const initSockets = require("./backend/sockets/init.js");
 
 app.use("/test", testRoutes);
 
@@ -114,3 +117,20 @@ if (process.env.NODE_ENV === "development") {
 
   app.use(connectLiveReload());
 }
+
+app.use(cookieParser());
+
+const sessionMiddleware = session({
+  store: new pgSession({ pgPromise: db }),
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 },
+});
+
+app.use(sessionMiddleware);
+const server = initSockets(app, sessionMiddleware);
+
+/*server.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});*/

@@ -9,3 +9,11 @@ const create = (username, email, password) =>
 module.exports = {
   create,
 };
+
+const findByEmail = (email) =>
+  db.one("SELECT * FROM users WHERE email=$1", [email]);
+
+module.exports = {
+  create,
+  findByEmail,
+};

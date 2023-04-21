@@ -93,6 +93,8 @@ router.post(
   })
   }
 );
+
+
 // Root route for rules page
 router.get("/rules", (request, response) => {
   response.render("rules", {
@@ -194,5 +196,15 @@ router.get("/game", isAuthenticated, (request, response) => {
 router.get("/game", (request, response) => {
   response.redirect('/')
 })
+
+
+router.post("/:id", (request, response) => {
+  const io = request.app.get("io");
+
+  const { message } = request.body;
+  const sender = request.session.user.username;
+
+  io.emit("chat-message", { message, sender });
+});
 
 module.exports = router;
