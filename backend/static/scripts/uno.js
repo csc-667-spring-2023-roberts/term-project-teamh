@@ -6,21 +6,16 @@ webSocket.onmessage = (event) => {
   message = JSON.parse(event.data)
   console.log(message)
 
-  if (message.event == "chat") {
-
-    document.getElementById('chatbox').innerHTML += '' + message.user + ': ' + message.data + "<br/>"
-  }
-  if (message.event == "socket") {
+  if (message.event === "socket") {
     console.log('connected to socket')
   }
-  if (message.event == "draw") {
-    console.log("draw")
-    console.log(message.data.src)
-    //var oldscrollHeight = $("#chatbox")[0].scrollHeight - 20; 
-    document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src+ "\"/>" ;
+  if (message.event === 'chat') {
+    document.getElementById('chatbox').innerHTML += '<div class=\"chattext\">' + message.user + ': ' + message.data+ "</div>"
     document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
   }
-  console.log(message);
+  if (message.event === 'draw') {
+    document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
+  }
 };
 webSocket.addEventListener("open", () => {
   console.log("We are connected");
@@ -28,6 +23,7 @@ webSocket.addEventListener("open", () => {
 function sendMessage(event) {
   console.log('sendmessage')
   var inputMessage = document.getElementById('message')
+  var room = document.getElementById('room')
 
   let x = sessionStorage.getItem('login')
   console.log(x);
@@ -38,7 +34,8 @@ function sendMessage(event) {
   const message = {
     event: "chat",
     data: inputMessage.value,
-    user: user.username
+    user: user.username,
+    room: room.value
   }
 
   webSocket.send(JSON.stringify(message))
@@ -46,3 +43,20 @@ function sendMessage(event) {
   event.preventDefault();
 }
 document.getElementById('input-form').addEventListener('submit', sendMessage);
+
+function drawCard() {
+  var room = document.getElementById('room')
+  let x = sessionStorage.getItem('login')
+  console.log(x);
+
+  let user = JSON.parse(x)
+
+  const message = {
+    event: "draw",
+    data: '',
+    user: user.username,
+    room: room.value
+  }
+
+  webSocket.send(JSON.stringify(message))
+}

@@ -13,6 +13,7 @@
         <h1>Main Content </h1>
         <p>game room </p>
         <div id="cardarea"></div>
+        <button type="button" onClick="drawCard()">Draw Card</button>
       </main>
       <aside class="sidebar">
         <h1>Room: <%= roomname %> </h1>
@@ -28,10 +29,18 @@
         </div>
         <h2>Chat </h2>
         <form id="input-form">
-          <label for="message">Message:</label><input id="message" type="text" name="message"><br><br>
-          <input type="submit"
-            value="Send">
-          <div id="chatbox"></div>
+          <label for="message">Message:</label>
+          <input id="message" type="text" name="message">
+          <input id="room" type="hidden" name="room" value="<%= roomname %>"/><br>
+          <input type="submit" value="Send">
+          <div id="chatbox">
+            <% chats.forEach(function(p) { %>
+              <div class="chattext">
+                <%= p.player %> : <%= p.message %>
+              </div>
+            <% }); 
+            %>
+          </div>
         </form>
       </aside>
       <footer class="footer">

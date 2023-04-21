@@ -7,7 +7,8 @@ const express = require("express");
 var session = require('express-session');
 require("dotenv").config();
 
-const {getCards} = require('./backend/deck.js');
+const { updateRoomChat } = require("./backend/room");
+const {getCards} = require('./backend/deck');
 const app = express();
 const testRoutes = require("./backend/routes/test/index.js");
 
@@ -44,19 +45,6 @@ app.use((request, response, next) => {
   next(createError(404));
 });
 
-rooms = [
-  { name: 'room1', host: 'abc', players: [{ name: 'player1' }] },
-  { name: 'room2', host: 'xyz', players: [] },
-]
-roomchats = [
-  { 
-    name: 'room1', chats: [
-    { 
-      player: 'player1',
-      message: 'hello'
-    }] 
-  },
-]
 
 let cards = getCards()
 
@@ -74,33 +62,37 @@ wss.on('connection', ws => {
   ws.on('open', () => console.log('Connection Open'))
   ws.on('close', () => console.log('Client has disconnected!'))
   ws.on('message', data => {
+    let payload = JSON.parse(data)
+    console.log(payload)
+    if (payload.event === 'chat') {
+      updateRoomChat(payload.room, payload.user, payload.data)
+    }
+
     wss.clients.forEach(client => {
       console.log(`message to all client: ${data}`)
       if (client.readyState === WebSocket.OPEN) {
-
-        let payload = JSON.parse(data)
-        console.log(payload)
-
-        message = {
-          event: "chat",
-          data: payload.data,
-          user: payload.user
+        if (payload.event === 'chat') {
+          message = {
+            event: "chat",
+            data: payload.data,
+            user: payload.user,
+            room: payload.room,
+          }
+          message = JSON.stringify(message)
+          client.send(message)
         }
-        message = JSON.stringify(message)
-        client.send(message)
-
-        console.log ('card length: ')
-        console.log(cards.length)
-        num = Math.floor(Math.random() * cards.length)
-        console.log(num)
-        message = {
-          event: 'draw',
-          data: cards[num]
+        if (payload.event === 'draw') {
+          num = Math.floor(Math.random() * cards.length)
+          console.log(num)
+          message = {
+            event: 'draw',
+            data: cards[num]
+          }
+          message = JSON.stringify(message)
+          console.log('message' + message);
+          client.send(message)
         }
-        message = JSON.stringify(message)
-        console.log('message' + message);
-        client.send(message)
-			}
+      }
     })
   })
   ws.onerror = function () {

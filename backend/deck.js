@@ -8,7 +8,7 @@ const getCards = () => {
       color: 'blue',
       src: "/images/blue_" + i + ".png"
     }
-    console.log(card)
+    //console.log(card)
     if (i==0) {
       cards.push(card)
     } else {
@@ -46,21 +46,21 @@ const getCards = () => {
       cards.push(card)
     }
   }  
-    // yellow
-    for (let i = 0; i < 10; i++) {
-      let card = {
-        value: i,
-        color: 'yellow',
-        src: "/images/yellow_" + i + ".png"
-      }
-      console.log(card)
-      if (i==0) {
-        cards.push(card)
-      } else {
-        cards.push(card)
-        cards.push(card)
-      }
-    }  
+  // yellow
+  for (let i = 0; i < 10; i++) {
+    let card = {
+      value: i,
+      color: 'yellow',
+      src: "/images/yellow_" + i + ".png"
+    }
+    console.log(card)
+    if (i==0) {
+      cards.push(card)
+    } else {
+      cards.push(card)
+      cards.push(card)
+    }
+  } 
   return cards
 }
 

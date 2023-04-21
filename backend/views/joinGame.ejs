@@ -2,32 +2,30 @@
 <html lang="en"> 
 
 <head>
-<title> <%= joinGame %></title>  
-    <link rel="stylesheet" href="/styles/home.css" />
-    <main> 
+  <title>
+    <%= title %>
+  </title>
+  <link rel="stylesheet" href="/stylesheets/home.css" />
 </head>
-<body> 
-    <div>
-    <form id="join-game" action=" /joinGame" method = "post"></form>
-    <label for="RoomName"> Room Name: </label> <input id="gameID" type="text" name="user" <br>
-    <label for = "Password"> Password:</label> <input pass= "gamePass" type = "password" <br> 
-   
-    <input type= "submit">
-    <label for="message">Message:</label
-        ><input
-          id="message"
-          type="text"
-          name="message"
+<body>
+  <main>
+  <div>
+    <form id="join-game" action=" /joinGame" method="post">
+      <label for="RoomName"> Room Name: </label> 
+      <input id="room" type="text" name="room" value="<%= room %>"/> <br>
+      <label for="Password"> Password:</label> 
+      <input pass="gamePass" type="password" /> <br>
+      <input type="submit">
+      <br/>
+    </form>
+  </div>
 
-    /><br /><br /><input type="submit" value="Send" />
-    <div id="chatbox"></div>
-  </form>
-</div>
-
-</main>
+  </main>
 
 
-<footer class "footer"> <%- include ('partials/footer')></footer>
-<script src="/scripts/uno.js"></script>
+  <footer class="footer">
+    <%- include('partials/footer')%>
+  </footer>
+  <script src="/scripts/uno.js"></script>
 </body>
 </html>
