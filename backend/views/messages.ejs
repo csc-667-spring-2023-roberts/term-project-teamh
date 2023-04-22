@@ -1,8 +1,20 @@
-<p>You are: <%= username %> <%= email %> (<%= id %>)</p>
-
-<div id="chat-container">
-  <div id="messages"></div>
-  <label>
-    <input id="chatMessage" name="chat-message" placeholder="Message..." />
-  </label>
-</div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('partials/head') %>
+  </head>
+  <body>
+    <header>
+      <ul>
+        <li><a href="/">Home</a></li>
+      </ul>
+    </header>
+    <p>You are: <%= username %> <%= email %> (<%= id %>)</p>
+    <div id="chat-container">
+      <div id="messages"></div>
+      <label>
+        <input id="chatMessage" name="chat-message" placeholder="Message..." />
+      </label>
+    </div>
+  </body>
+</html>
