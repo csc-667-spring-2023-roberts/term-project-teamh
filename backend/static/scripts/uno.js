@@ -14,7 +14,10 @@ socket.on("draw", function(event) {
   console.log('draw');
   console.log(event);
   message = JSON.parse(event)
-  document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
+  const imgElement = document.createElement('img');
+  imgElement.src = message.data.src;
+  document.getElementById('cardarea').append(imgElement);
+  // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
 });
 function sendMessage(event) {
   console.log('sendmessage')

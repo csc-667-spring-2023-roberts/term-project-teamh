@@ -1,7 +1,8 @@
 const express = require("express");
 const querystring = require('querystring');  
 
-const { getRoomByName, getRoomChatByName } = require("../room");
+const { getRoomByName, getRoomChatByName, getPlayerByRoomAndName} = require("../room");
+const {getCards, shuffle} = require('../deck');
 
 const router = express.Router();
 
@@ -48,7 +49,6 @@ router.get("/joingame", (request, response) => {
 
   let result = getRoomByName(request.query.room)
 
-  //result.players.push({name:request.session.user})
 
   const query = querystring.stringify(request.query)
 
@@ -121,12 +121,22 @@ router.get("/logout", (request, response) => {
 
 // new game
 router.post("/newgame", isAuthenticated, (request, response) => {
+  console.log('--- newgame ----')
   rooms.push({
     name: request.body.roomname,
     host: request.session.user,
-    players: []
+    players: [
+      { name: request.session.user,
+        hands: []
+      }
+    ]
   })
-  console.log('--- newgame ----')
+  roomchats.push(
+    {
+      name: request.body.roomname,
+      chats: [] 
+    }
+  );
   console.log(rooms)
 
   const query = querystring.stringify({room: request.body.roomname})
@@ -137,24 +147,11 @@ router.post("/newgame", (request, response) => {
   response.redirect('/')
 })
 
-// router.get("/joingame", (request, response) => {
-
-//   console.log('----joingame----')
-
-//   let result = getRoomByName(request.query.room)
-
-//   result.players.push({name:request.session.user})
-
-//   const query = querystring.stringify(request.query)
-//   console.log(query)
-//   response.redirect('/waitingroom?' + query)
-// })
-
 router.get("/waitingroom", isAuthenticated, (request, response) => {
 
   console.log('----waitingroom----')
   let result = getRoomByName(request.query.room)
-
+  console.log(result)
   let roomchat = getRoomChatByName(request.query.room)
   console.log(roomchat)
 
@@ -179,6 +176,23 @@ router.get("/game", isAuthenticated, (request, response) => {
   console.log('----game----')
   let result = getRoomByName(request.query.room)
 
+  let c = getCards().map((x)=>x);
+  c = shuffle(c);
+  result.deck = c;
+  console.log(result.deck.length);
+
+  let x = result.players.length * 7;
+  for (let i = 0; i < result.players.length; i++) {
+    const hands = c.slice(0, 7);
+    console.log(hands);
+    result.players[i].hands = hands;
+    result.deck.splice(0, 7);
+    console.log(result.deck.length);
+  }
+
+  player = getPlayerByRoomAndName(request.query.room, request.session.user);
+  console.log(player);
+
   let roomchat = getRoomChatByName(request.query.room)
   
   let chats = []
@@ -190,6 +204,7 @@ router.get("/game", isAuthenticated, (request, response) => {
     roomname: result.name,
     host: result.host,
     players: result.players,
+    me: player,
     chats: chats,
   })
 })

@@ -1,6 +1,18 @@
 rooms = [
-  { name: 'room1', host: 'abc', players: [{ name: 'player1' }] },
-  { name: 'room2', host: 'xyz', players: [] },
+  { 
+    name: 'room1', 
+    host: 'abc', 
+    deck: [],
+    players: [
+      { name: 'player1',
+        hands: []
+      }, 
+      { name: 'asdf',
+        hands: []
+      }
+    ] 
+  },
+  { name: 'room2', host: 'xyz', deck: [], players: [] },
 ]
 roomchats = [
   { 
@@ -26,6 +38,21 @@ const getRoomChatByName = (name) => {
   return roomchat
 }
 
+const getPlayerByRoomAndName = (room, name) => {
+  console.log(room)
+  console.log(name)
+  let result = rooms.find(r => {
+    return r.name === room;
+  });
+  if (result !== undefined) {
+    result = result.players.find(p => {
+      console.log(p.name)
+      return p.name === name;
+    });
+  }
+  return result;
+}
+
 const updateRoomChat = (room, player, message) => {
   console.log('---- updateRoomChat')
   let roomchat = roomchats.find(r => {
@@ -36,4 +63,4 @@ const updateRoomChat = (room, player, message) => {
     console.log(roomchat)
   }
 }
-module.exports = {getRoomByName, getRoomChatByName, updateRoomChat};
+module.exports = {getRoomByName, getRoomChatByName, getPlayerByRoomAndName, updateRoomChat};

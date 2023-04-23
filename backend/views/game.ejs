@@ -12,7 +12,13 @@
       <main class="main">
         <h1>Main Content </h1>
         <p>game room </p>
-        <div id="cardarea"></div>
+        <div id="cardarea">
+
+          <% me.hands.forEach((h) => { %>
+            <img src='<%= h.src %>'/>
+            <% }); 
+          %>
+        </div>
         <button type="button" onClick="drawCard()">Draw Card</button>
       </main>
       <aside class="sidebar">
