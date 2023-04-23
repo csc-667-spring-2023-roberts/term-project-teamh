@@ -8,7 +8,11 @@ const router = express.Router();
 
 // middleware to test if authenticated
 function isAuthenticated(req, res, next) {
-  if (req.session.user) next()
+  console.log('---isAuthenticated---')
+  if (req.session.user) {
+    console.log('Session is valid')
+    next()
+  }
   else next("route")
 }
 
@@ -58,9 +62,12 @@ router.get("/joingame", (request, response) => {
 router.post("/joingame", (request, response) => {
   console.log('----POST joingame----')
   console.log(request.body)
-  let result = getRoomByName(request.body.room)
-  console.log(result)
-
+  let room = getRoomByName(request.body.room)
+  console.log(room)
+  room.players.push({
+    name: request.session.user,
+    hands: []
+  })
   const query = querystring.stringify({room: request.body.room})
   console.log(query)
   response.redirect('/waitingroom?' + query)
@@ -151,21 +158,26 @@ router.get("/waitingroom", isAuthenticated, (request, response) => {
 
   console.log('----waitingroom----')
   let result = getRoomByName(request.query.room)
-  console.log(result)
+  //console.log(result)
   let roomchat = getRoomChatByName(request.query.room)
-  console.log(roomchat)
+  //console.log(roomchat)
 
-  let chats = []
+  let me = getPlayerByRoomAndName(request.query.room, request.session.user);
+  if (me === undefined) {
+    response.redirect('/')
+  } else {
+    let chats = []
 
-  if (roomchat !== undefined) {
-    chats = roomchat.chats
+    if (roomchat !== undefined) {
+      chats = roomchat.chats
+    }
+    response.render("waitingroom", {
+      roomname: result.name,
+      host: result.host,
+      players: result.players,
+      chats: chats,
+    })
   }
-  response.render("waitingroom", {
-    roomname: result.name,
-    host: result.host,
-    players: result.players,
-    chats: chats,
-  })
 })
 router.get("/waitingroom", (request, response) => {
   response.redirect('/')
@@ -179,15 +191,15 @@ router.get("/game", isAuthenticated, (request, response) => {
   let c = getCards().map((x)=>x);
   c = shuffle(c);
   result.deck = c;
-  console.log(result.deck.length);
+  //console.log(result.deck.length);
 
   let x = result.players.length * 7;
   for (let i = 0; i < result.players.length; i++) {
     const hands = c.slice(0, 7);
-    console.log(hands);
+    //console.log(hands);
     result.players[i].hands = hands;
     result.deck.splice(0, 7);
-    console.log(result.deck.length);
+    //console.log(result.deck.length);
   }
 
   player = getPlayerByRoomAndName(request.query.room, request.session.user);

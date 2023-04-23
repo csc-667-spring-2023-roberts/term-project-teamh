@@ -4,6 +4,23 @@
 <head>
   <%- include('partials/head'); %>
 </head>
+<style>
+  .game-container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 1fr 200px;
+    gap: 10px;
+    background-color: #2196F3;
+    padding: 10px;
+  }
+  
+  .grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+  }
+</style>
 
 <body>
   <div class="container">
@@ -12,12 +29,22 @@
       <main class="main">
         <h1>Main Content </h1>
         <p>game room </p>
-        <div id="cardarea">
-
-          <% me.hands.forEach((h) => { %>
-            <img src='<%= h.src %>'/>
-            <% }); 
-          %>
+        <div id="game-container">
+          <div style="display: grid; grid-template-columns: auto auto ;">
+            <div >
+              <img src="/images/card_back.png" />
+            </div>
+            <div>
+              <img src="/images/red_8.png" />
+            </div>
+          </div>
+          <br>
+          <div id="cardarea">
+            <% me.hands.forEach((h) => { %>
+              <img src='<%= h.src %>' width="98px" height="136px"/>
+              <% }); 
+            %>
+          </div>
         </div>
         <button type="button" onClick="drawCard()">Draw Card</button>
       </main>

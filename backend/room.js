@@ -39,9 +39,12 @@ const getRoomChatByName = (name) => {
 }
 
 const getPlayerByRoomAndName = (room, name) => {
+  console.log('----getPlayerByRoomAndName----')
   console.log(room)
   console.log(name)
+  console.log(rooms);
   let result = rooms.find(r => {
+    console.log(r)
     return r.name === room;
   });
   if (result !== undefined) {
@@ -50,6 +53,7 @@ const getPlayerByRoomAndName = (room, name) => {
       return p.name === name;
     });
   }
+  console.log(result)
   return result;
 }
 

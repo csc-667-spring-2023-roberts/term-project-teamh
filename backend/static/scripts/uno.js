@@ -16,6 +16,8 @@ socket.on("draw", function(event) {
   message = JSON.parse(event)
   const imgElement = document.createElement('img');
   imgElement.src = message.data.src;
+  imgElement.style.width = "98px";
+  imgElement.style.height = "136px";
   document.getElementById('cardarea').append(imgElement);
   // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
 });
