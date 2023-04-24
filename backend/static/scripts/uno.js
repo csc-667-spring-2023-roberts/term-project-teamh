@@ -18,9 +18,26 @@ socket.on("draw", function(event) {
   imgElement.src = message.data.src;
   imgElement.style.width = "98px";
   imgElement.style.height = "136px";
+  imgElement.setAttribute("onclick", `discardCard(this.src, ${message.data.value})`);
   document.getElementById('cardarea').append(imgElement);
   // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
 });
+
+socket.on("discardcard", function(event) {
+  console.log('discardcard');
+  console.log(event);
+  message = JSON.parse(event)
+  console.log(message);
+  const imgElement = document.createElement('img');
+  imgElement.src = message.cardimg;
+  imgElement.style.width = "98px";
+  imgElement.style.height = "136px";
+  imgElement.id = "discardimg";
+  old = document.getElementById('discardimg');
+  document.getElementById('discardpile').removeChild(old);
+  document.getElementById('discardpile').append(imgElement);
+});
+
 function sendMessage(event) {
   console.log('sendmessage')
   var inputMessage = document.getElementById('message')
@@ -60,4 +77,21 @@ function drawCard() {
   }
 
   socket.emit('draw', JSON.stringify(message))
+}
+
+function discardCard(imgsrc, id) {
+  var room = document.getElementById('room');
+  let x = sessionStorage.getItem('login');
+  let user = JSON.parse(x);;
+  console.log(user);
+  const message = {
+    event: "discard",
+    data: {
+      imgsrc: imgsrc,
+      id: id
+    },
+    user: user.username,
+    room: room.value
+  }
+  socket.emit('discardcard', JSON.stringify(message));
 }

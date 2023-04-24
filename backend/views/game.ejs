@@ -34,14 +34,15 @@
             <div >
               <img src="/images/card_back.png" />
             </div>
-            <div>
-              <img src="/images/red_8.png" />
+            <div id="discardpile">
+              <span>Discard Pile</span>
+              <img id="discardimg" src="/images/red_8.png" width="98px" height="136px"/>
             </div>
           </div>
           <br>
           <div id="cardarea">
             <% me.hands.forEach((h) => { %>
-              <img src='<%= h.src %>' width="98px" height="136px"/>
+              <img src='<%= h.src %>' width="98px" height="136px" onClick="discardCard(this.src, <%= h.value %>)"/>
               <% }); 
             %>
           </div>

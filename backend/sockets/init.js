@@ -34,6 +34,16 @@ const initSockets = (app, sessionMiddleware) => {
       console.log('message' + message);
       io.emit('draw', message);
     });
+    _socket.on("discardcard", (data) => {
+      let payload = JSON.parse(data);
+      console.log("discardcard");
+      console.log(payload.data);
+      var message = {
+        cardimg : payload.data.imgsrc,
+      }
+      message = JSON.stringify(message);
+      io.emit('discardcard', message);
+    });
   });
 
   app.set("io", io);

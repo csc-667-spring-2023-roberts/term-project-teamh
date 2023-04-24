@@ -1,10 +1,11 @@
 const getCards = () => {
   let cards = [];
 
+  let cardId = 0;
   // blue
   for (let i = 0; i < 10; i++) {
     let card = {
-      value: i,
+      value: cardId++,
       color: 'blue',
       src: "/images/blue_" + i + ".png"
     }
@@ -13,13 +14,14 @@ const getCards = () => {
       cards.push(card)
     } else {
       cards.push(card)
+      card.value = cardId++
       cards.push(card)
     }
   }
   // red
   for (let i = 0; i < 10; i++) {
     let card = {
-      value: i,
+      value: cardId++,
       color: 'red',
       src: "/images/red_" + i + ".png"
     }
@@ -28,13 +30,14 @@ const getCards = () => {
       cards.push(card)
     } else {
       cards.push(card)
+      card.value = cardId++
       cards.push(card)
     }
   }
   // green
   for (let i = 0; i < 10; i++) {
     let card = {
-      value: i,
+      value: cardId++,
       color: 'green',
       src: "/images/green_" + i + ".png"
     }
@@ -43,13 +46,14 @@ const getCards = () => {
       cards.push(card)
     } else {
       cards.push(card)
+      card.value = cardId++
       cards.push(card)
     }
   }  
   // yellow
   for (let i = 0; i < 10; i++) {
     let card = {
-      value: i,
+      value: cardId++,
       color: 'yellow',
       src: "/images/yellow_" + i + ".png"
     }
@@ -58,6 +62,7 @@ const getCards = () => {
       cards.push(card)
     } else {
       cards.push(card)
+      card.value = cardId++
       cards.push(card)
     }
   } 
