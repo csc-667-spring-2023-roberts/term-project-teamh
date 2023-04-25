@@ -13,13 +13,12 @@
     <label for = "Password"> Password:</label> <input pass= "gamePass" type = "password" <br> 
     <label for = "Players" > Number of Players: </label> <input players = "number" type = "text" name= "players"> <br>
     <input type= "submit">
-    <label for="message">Message:</label
-        ><input
+    <label for="message">Message:</label>
+      <input
           id="message"
           type="text"
-          name="message"
-
-    /><br /><br /><input type="submit" value="Send" />
+          name="message"/>
+      <br /><br /><input type="submit" value="Send" />
     <div id="chatbox"></div>
   </form>
 </div>
@@ -28,6 +27,7 @@
 
 
 <footer class "footer"> <%- include ('partials/footer')></footer>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/scripts/uno.js"></script>
 </body>
 </html>

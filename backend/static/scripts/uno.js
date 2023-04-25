@@ -62,7 +62,7 @@ function sendMessage(event) {
   inputMessage.value = ""
   event.preventDefault();
 }
-document.getElementById('input-form').addEventListener('submit', sendMessage);
+//document.getElementById('input-form').addEventListener('submit', sendMessage);
 
 function drawCard() {
   var room = document.getElementById('room')

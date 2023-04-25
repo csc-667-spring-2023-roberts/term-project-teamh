@@ -19,7 +19,10 @@ const initSockets = (app, sessionMiddleware) => {
       console.log(payload);
       console.log("chat");
       updateRoomChat(payload.room, payload.user, payload.data);
-      io.emit('chat', data);
+      console.log(_socket.rooms);
+      _socket.join(payload.room);
+      io.in(payload.room).emit('chat', data);
+      
     });
     _socket.on("draw", (data) => {
       console.log("draw");

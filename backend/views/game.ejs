@@ -62,7 +62,7 @@
           %>
         </div>
         <h2>Chat </h2>
-        <form id="input-form">
+        <form id="input-form" onsubmit="sendMessage(event);">
           <label for="message">Message:</label>
           <input id="message" type="text" name="message">
           <input id="room" type="hidden" name="room" value="<%= roomname %>"/><br>
