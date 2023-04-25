@@ -18,13 +18,14 @@ socket.on("draw", function(event) {
   imgElement.src = message.data.src;
   imgElement.style.width = "98px";
   imgElement.style.height = "136px";
+  imgElement.setAttribute('cardid', message.data.value);
   imgElement.setAttribute("onclick", `discardCard(this.src, ${message.data.value})`);
   document.getElementById('cardarea').append(imgElement);
   // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
 });
 
 socket.on("discardcard", function(event) {
-  console.log('discardcard');
+  console.log('from server: discardcard');
   console.log(event);
   message = JSON.parse(event)
   console.log(message);
@@ -33,7 +34,8 @@ socket.on("discardcard", function(event) {
   imgElement.style.width = "98px";
   imgElement.style.height = "136px";
   imgElement.id = "discardimg";
-  old = document.getElementById('discardimg');
+  imgElement.setAttribute("cardid", message.cardid);
+  let old = document.getElementById('discardimg');
   document.getElementById('discardpile').removeChild(old);
   document.getElementById('discardpile').append(imgElement);
 });
@@ -80,9 +82,13 @@ function drawCard() {
 }
 
 function discardCard(imgsrc, id) {
+  console.log(id);
+  let curDiscardCard = document.getElementById('discardimg');
+  let discardCardId = curDiscardCard.getAttribute('cardid');
+  console.log('discardCardId:' + discardCardId);
   var room = document.getElementById('room');
   let x = sessionStorage.getItem('login');
-  let user = JSON.parse(x);;
+  let user = JSON.parse(x);
   console.log(user);
   const message = {
     event: "discard",
@@ -92,6 +98,19 @@ function discardCard(imgsrc, id) {
     },
     user: user.username,
     room: room.value
+  }
+
+  let cardArea = document.getElementById('cardarea');
+  let childs = cardArea.children;
+  console.log(childs);
+  for (let i = 0; i < childs.length; i++) {
+    let el = childs[i];
+    console.log(el.getAttribute("cardid"));
+    if (el.getAttribute("cardid") === id+'') {
+      console.log('discard card' + id);
+      cardArea.removeChild(el);
+      break;
+    }
   }
   socket.emit('discardcard', JSON.stringify(message));
 }
