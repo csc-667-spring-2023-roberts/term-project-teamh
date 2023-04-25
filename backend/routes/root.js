@@ -84,7 +84,7 @@ router.get("/", function (_request, response) {
 router.post(
   "/login",
   express.urlencoded({ extended: false }),
-  function (request, response) {
+  function (request, response, next) {
   request.session.regenerate(function (err) {
     if (err) next(err)
 
