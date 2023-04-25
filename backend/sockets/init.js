@@ -40,6 +40,7 @@ const initSockets = (app, sessionMiddleware) => {
       console.log(payload.data);
       var message = {
         cardimg : payload.data.imgsrc,
+        cardid: payload.data.id,
       }
       message = JSON.stringify(message);
       io.emit('discardcard', message);

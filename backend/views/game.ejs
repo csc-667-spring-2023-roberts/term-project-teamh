@@ -35,14 +35,14 @@
               <img src="/images/card_back.png" />
             </div>
             <div id="discardpile">
-              <span>Discard Pile</span>
-              <img id="discardimg" src="/images/red_8.png" width="98px" height="136px"/>
+              <span>Discard Pile</span><br/>
+              <img id="discardimg" src="/images/blue_0.png" width="98px" height="136px" cardid="0"/>
             </div>
           </div>
           <br>
           <div id="cardarea">
             <% me.hands.forEach((h) => { %>
-              <img src='<%= h.src %>' width="98px" height="136px" onClick="discardCard(this.src, <%= h.value %>)"/>
+              <img src='<%= h.src %>' width="98px" height="136px" onClick="discardCard(this.src, <%= h.value %>)" cardid="<%= h.value %>"/>
               <% }); 
             %>
           </div>
