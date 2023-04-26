@@ -7,7 +7,8 @@ const getCards = () => {
     let card = {
       value: cardId++,
       color: 'blue',
-      src: "/images/blue_" + i + ".png"
+      src: "/images/blue_" + i + ".png",
+      type: 'number'
     }
     //console.log(card)
     if (i==0) {
@@ -18,12 +19,37 @@ const getCards = () => {
       cards.push(card)
     }
   }
+  let card = {
+    value: cardId++,
+    color: 'blue',
+    src: "/images/blue_picker.png",
+    type: 'pick2'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'blue',
+    src: "/images/blue_reverse.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'blue',
+    src: "/images/blue_skip.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
   // red
   for (let i = 0; i < 10; i++) {
     let card = {
       value: cardId++,
       color: 'red',
-      src: "/images/red_" + i + ".png"
+      src: "/images/red_" + i + ".png",
+      type: 'number'
     }
     //console.log(card)
     if (i==0) {
@@ -34,12 +60,37 @@ const getCards = () => {
       cards.push(card)
     }
   }
+  card = {
+    value: cardId++,
+    color: 'red',
+    src: "/images/red_picker.png",
+    type: 'pick2'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'red',
+    src: "/images/red_reverse.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'red',
+    src: "/images/red_skip.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
   // green
   for (let i = 0; i < 10; i++) {
     let card = {
       value: cardId++,
       color: 'green',
-      src: "/images/green_" + i + ".png"
+      src: "/images/green_" + i + ".png",
+      type: 'number'
     }
     //console.log(card)
     if (i==0) {
@@ -50,12 +101,38 @@ const getCards = () => {
       cards.push(card)
     }
   }  
+
+  card = {
+    value: cardId++,
+    color: 'green',
+    src: "/images/green_picker.png",
+    type: 'pick2'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'green',
+    src: "/images/green_reverse.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'green',
+    src: "/images/green_skip.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
   // yellow
   for (let i = 0; i < 10; i++) {
     let card = {
       value: cardId++,
       color: 'yellow',
-      src: "/images/yellow_" + i + ".png"
+      src: "/images/yellow_" + i + ".png",
+      type: 'number'
     }
     //console.log(card)
     if (i==0) {
@@ -66,6 +143,31 @@ const getCards = () => {
       cards.push(card)
     }
   } 
+
+  card = {
+    value: cardId++,
+    color: 'yellow',
+    src: "/images/yellow_picker.png",
+    type: 'pick2'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'yellow',
+    src: "/images/yellow_reverse.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
+  card = {
+    value: cardId++,
+    color: 'yellow',
+    src: "/images/yellow_skip.png",
+    type: 'reverse'
+  }
+  cards.push(card)
+
   return cards
 }
 
