@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title></title>
+  <title>Login</title>
   <link rel="stylesheet" href="/stylesheets/home.css">
 </head>
-<header>
-  <ul>
-    <li><a href="/">Home</a></li>
-  </ul>
-</header>
-
-<body>
-  <form id="login-form" action="/login" method="post">
-    <labe for="user">username:</labe><input id="user" type="text" name="user"><br>
-    <labe for="password">Password:</labe><input id="password" type="password" name="password"><br>
-    <input type="submit" value="Login" onclick="Login();"/>
-  </form>
+<body class="signup-body">
+  <div class="signUp-container">
+    <h1>Login</h1>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+    </ul>
+    <form id="login-form" class="signup-form" action="/login" method="post">
+      <label for="user">
+        <em>Username:</em>
+        <input id="user" class="input-field" type="text" name="user">
+      </label>
+      <label for="password">
+        <em>Password:</em>
+        <input id="password" class="input-field" type="password" name="password">
+      </label>
+      <input class="submit-btn" type="submit" value="Login" onclick="Login();"/>
+    </form>
+  </div>
 
   <script>
     function Login() {
@@ -28,8 +33,6 @@
       sessionStorage.setItem('login', s)
     }
     sessionStorage.removeItem('login')
-
   </script>
 </body>
-
 </html>

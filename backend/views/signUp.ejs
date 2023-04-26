@@ -7,44 +7,38 @@
     <script src="/scripts/bundle.js"></script>
     <link rel="stylesheet" href="/stylesheets/home.css" />
   </head>
-  <body>
-    <h1>Sign up page </h1>
+  <body class="signup-body">
+    <div class="signUp-container">
+      <h1>Sign up page </h1>
 
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/rules">Rules</a></li>
-    </ul>
+      <ul class="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/rules">Rules</a></li>
+      </ul>
 
-    <form method="post" action="/auth/login">
-      <label>
-        <em>Username</em>
-        <input name="username" autocomplete="username" />
-      </label>
-      <label>
-        <em>Email</em>
-        <input name="email" type="email" autocomplete="email" />
-      </label>
-      <label>
-        <em>Password</em>
-        <input
-          name="password"
-          type="password"
-          autocomplete="new-password"
-        />
-      </label>
-      <label>
-        <em>Confirm Password</em>
-        <input
-          name="confirm_password"
-          type="password"
-          autocomplete="new-password"
-        />
-      </label>
-      <label>
-        <input type="checkbox" name="terms" required />
-        I agree to the <a href="/terms">terms of service</a>.
-      </label>
-      <input type="submit" value="Login" />
-    </form>
+      <form class="signup-form" method="post" action="/auth/login">
+        <label>
+          <em>Username</em>
+          <input class="input-field" name="username" autocomplete="username" />
+        </label>
+        <label>
+          <em>Email</em>
+          <input class="input-field" name="email" type="email" autocomplete="email" />
+        </label>
+        <label>
+          <em>Password</em>
+          <input class="input-field" name="password" type="password" autocomplete="new-password" />
+        </label>
+        <label>
+          <em>Confirm Password</em>
+          <input class="input-field" name="confirm_password" type="password" autocomplete="new-password" />
+        </label>
+        <label class="terms">
+          <input type="checkbox" name="terms" required />
+          I agree to the <a href="/terms">terms of service</a>.
+        </label>
+        <input class="submit-btn" type="submit" value="Login" />
+      </form>
+    </div>
   </body>
 </html>
