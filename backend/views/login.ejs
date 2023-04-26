@@ -1,38 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Login</title>
-  <link rel="stylesheet" href="/stylesheets/home.css">
-</head>
-<body class="signup-body">
-  <div class="signUp-container">
-    <h1>Login</h1>
-    <ul class="nav">
-      <li><a href="/">Home</a></li>
-    </ul>
-    <form id="login-form" class="signup-form" action="/login" method="post">
-      <label for="user">
-        <em>Username:</em>
-        <input id="user" class="input-field" type="text" name="user">
-      </label>
-      <label for="password">
-        <em>Password:</em>
-        <input id="password" class="input-field" type="password" name="password">
-      </label>
-      <input class="submit-btn" type="submit" value="Login" onclick="Login();"/>
-    </form>
-  </div>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/home.css" />
+  </head>
+  <body class="signup-body">
+    <div class="signUp-container">
+      <h1>Login</h1>
+      <ul class="nav">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <form id="login-form" class="signup-form" action="/login" method="post">
+        <label for="user">
+          <em>Username:</em>
+          <input id="user" class="input-field" type="text" name="user" />
+        </label>
+        <label for="password">
+          <em>Password:</em>
+          <input
+            id="password"
+            class="input-field"
+            type="password"
+            name="password"
+          />
+        </label>
+        <input
+          class="submit-btn"
+          type="submit"
+          value="Login"
+          onclick="Login();"
+        />
+      </form>
+    </div>
 
-  <script>
-    function Login() {
-      var username = document.getElementById('user').value;
-      let user = {
-        username: username,
+    <script>
+      function Login() {
+        var username = document.getElementById("user").value;
+        let user = {
+          username: username,
+        };
+        let s = JSON.stringify(user);
+        sessionStorage.setItem("login", s);
       }
-      let s = JSON.stringify(user)
-      sessionStorage.setItem('login', s)
-    }
-    sessionStorage.removeItem('login')
-  </script>
-</body>
+      sessionStorage.removeItem("login");
+    </script>
+  </body>
 </html>

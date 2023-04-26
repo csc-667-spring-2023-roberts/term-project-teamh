@@ -1,74 +1,67 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <%- include('partials/head') %>
+    <script>
+      function startNewGame(e) {
+        console.log("startNewGame");
+        var room = document.getElementById("roomname");
 
-<head>
-  <%- include('partials/head') %>
-  <script>
-    function startNewGame(e) {
+        let x = sessionStorage.getItem("login");
+        //console.log(x);
 
-      console.log('startNewGame')
-      var room = document.getElementById('roomname')
-    
-      let x = sessionStorage.getItem('login')
-      //console.log(x);
-    
-      let user = JSON.parse(x)
-    
-      const message = {
-        event: "joinroom",
-        user: user.username,
-        room: room.value
+        let user = JSON.parse(x);
+
+        const message = {
+          event: "joinroom",
+          user: user.username,
+          room: room.value,
+        };
+
+        //alert(e);
+        socket.emit("joinroom", JSON.stringify(message));
+        //e.preventDefault();
       }
+    </script>
+  </head>
 
-      //alert(e);
-      socket.emit('joinroom', JSON.stringify(message))
-      //e.preventDefault();
-      
-    }
-  </script>
-</head>
-
-<body>
-  <div class="container">
-    <%- include('partials/header') %>
-
-    <% if (user) { %>
-      <% } else { %>
-        <ul>
-          <li><a href="/login">login</a></li>
-          <li><a href="/signup">signup</a></li>
-        </ul>
+  <body>
+    <div class="container">
+      <%- include('partials/header') %> <% if (user) { %> <% } else { %>
+      <ul>
+        <li><a href="/login">login</a></li>
+        <li><a href="/signup">signup</a></li>
+      </ul>
       <% } %>
       <main class="main">
-        <h1>Uno </h1>
+        <h1>Uno</h1>
         <div>
-          <p>Start a new game </p>
-          <form id="start-new-game-form" action="newgame" method="post" onsubmit="startNewGame(event)">
+          <p>Start a new game</p>
+          <form
+            id="start-new-game-form"
+            action="newgame"
+            method="post"
+            onsubmit="startNewGame(event)"
+          >
             <label for="roomname">Room name:</label>
-            <input id="roomname" type="text" name="roomname" /><br><br>
+            <input id="roomname" type="text" name="roomname" /><br /><br />
             <input type="submit" value="Create" />
           </form>
         </div>
-        <br/>
+        <br />
 
         <div>
-          Join other games:
-          <% openrooms.forEach(function(room) { %>
-            <li>
-                <%= room.name %> <a href='/joingame?room=<%= room.name %>'>join</a>
-            </li>
-            <% }); 
-          %>
+          Join other games: <% openrooms.forEach(function(room) { %>
+          <li>
+            <%= room.name %> <a href="/joingame?room=<%= room.name %>">join</a>
+          </li>
+          <% }); %>
         </div>
       </main>
-      <aside class="sidebar">
-      </aside>
-      <footer class="footer">
-        <%- include('partials/footer'); %>
-      </footer>
-  </div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/scripts/uno.js">  </script>
-</body>
-
+      <aside class="sidebar"></aside>
+      <footer class="footer"><%- include('partials/footer'); %></footer>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/uno.js"></script>
+  </body>
 </html>

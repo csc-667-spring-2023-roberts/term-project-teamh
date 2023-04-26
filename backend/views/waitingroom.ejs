@@ -1,74 +1,61 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <%- include('partials/head'); %>
 
-<head>
-  <%- include('partials/head'); %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/uno.js"></script>
+    <script>
+      function onload(e) {
+        console.log("onload");
+        var room = document.getElementById("room");
+        let x = sessionStorage.getItem("login");
+        let user = JSON.parse(x);
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/scripts/uno.js">  </script>
-  <script>
+        const message = {
+          event: "joinroom",
+          user: user.username,
+          room: room.value,
+        };
 
-    function onload(e) {
+        console.log(socket);
+        socket.emit("joinroom", JSON.stringify(message));
+      }
+    </script>
+  </head>
 
-      console.log('onload');
-      var room = document.getElementById('room');
-      let x = sessionStorage.getItem('login');
-      let user = JSON.parse(x);
-    
-      const message = {
-        event: "joinroom",
-        user: user.username,
-        room: room.value
-      };
-
-      console.log(socket);
-      socket.emit('joinroom', JSON.stringify(message));
-    }
-  </script>
-</head>
-
-<body onload="onload()">
-  <div class="container">
-    <%- include('partials/header'); %>
+  <body onload="onload()">
+    <div class="container">
+      <%- include('partials/header'); %>
 
       <main class="main">
-        <h1>Room: <%= roomname %> </h1>
-        <p>Waiting room </p>
+        <h1>Room: <%= roomname %></h1>
+        <p>Waiting room</p>
         <p>Host: <%= host %></p>
         <div>
-          Players
-          <% players.forEach(function(p) { %>
-            <li>
-                <%= p.name %>
-            </li>
-            <% }); 
-          %>
+          Players <% players.forEach(function(p) { %>
+          <li><%= p.name %></li>
+          <% }); %>
         </div>
 
         <a href="\game?room=<%= roomname %>"> Start game</a>
       </main>
       <aside class="sidebar">
-        <h2>Chat </h2>
+        <h2>Chat</h2>
         <form id="input-form" onsubmit="sendMessage(event);">
           <label for="message">Message:</label>
-          <input id="message" type="text" name="message">
-          <input id="room" type="hidden" name="room" value="<%= roomname %>"/>
-          <br/>
-          <input type="submit" value="Send"/>
+          <input id="message" type="text" name="message" />
+          <input id="room" type="hidden" name="room" value="<%= roomname %>" />
+          <br />
+          <input type="submit" value="Send" />
           <div id="chatbox">
             <% chats.forEach(function(p) { %>
-              <div class="chattext">
-                <%= p.player %> : <%= p.message %>
-              </div>
-            <% }); 
-            %>
+            <div class="chattext"><%= p.player %> : <%= p.message %></div>
+            <% }); %>
           </div>
         </form>
       </aside>
-      <footer class="footer">
-        <%- include('partials/footer'); %>
-      </footer>
-  </div>
-</body>
-
+      <footer class="footer"><%- include('partials/footer'); %></footer>
+    </div>
+  </body>
 </html>

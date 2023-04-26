@@ -2,7 +2,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const { updateRoomChat } = require("../room");
-const {getCards} = require('../deck');
+const { getCards } = require("../deck");
 const initSockets = (app, sessionMiddleware) => {
   const server = http.createServer(app);
   const io = new Server(server);
@@ -11,8 +11,8 @@ const initSockets = (app, sessionMiddleware) => {
 
   io.on("connection", (_socket) => {
     console.log("Connection");
-    _socket.on('disconnect', () => {
-      console.log('user disconnected');
+    _socket.on("disconnect", () => {
+      console.log("user disconnected");
     });
     _socket.on("chat", (data) => {
       let payload = JSON.parse(data);
@@ -21,8 +21,7 @@ const initSockets = (app, sessionMiddleware) => {
       updateRoomChat(payload.room, payload.user, payload.data);
       console.log(_socket.rooms);
       _socket.join(payload.room);
-      io.in(payload.room).emit('chat', data);
-      
+      io.in(payload.room).emit("chat", data);
     });
     _socket.on("draw", (data) => {
       console.log("draw");
@@ -30,23 +29,23 @@ const initSockets = (app, sessionMiddleware) => {
 
       let num = Math.floor(Math.random() * cards.length);
       message = {
-        event: 'draw',
-        data: cards[num]
+        event: "draw",
+        data: cards[num],
       };
       message = JSON.stringify(message);
-      console.log('message' + message);
-      io.emit('draw', message);
+      console.log("message" + message);
+      io.emit("draw", message);
     });
     _socket.on("discardcard", (data) => {
       let payload = JSON.parse(data);
       console.log("discardcard");
       console.log(payload.data);
       var message = {
-        cardimg : payload.data.imgsrc,
+        cardimg: payload.data.imgsrc,
         cardid: payload.data.id,
-      }
+      };
       message = JSON.stringify(message);
-      io.emit('discardcard', message);
+      io.emit("discardcard", message);
     });
   });
 

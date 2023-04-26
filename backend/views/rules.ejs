@@ -16,27 +16,49 @@
       <main>
         <h1>UNO Rules</h1>
         <p>RULES TO PLAY UNO:</p>
-        <ul id="rules">
+        <ul id="rules" >
           <li>Each player is dealt 7 cards at the start of the game.</li>
           <li>The remaining cards are placed in a Draw Pile face down.</li>
-          <li>The top card of the Draw Pile is turned over to begin a Discard Pile.</li>
-          <li>The first player has to match the card in the Discard Pile either by number, color, or word.</li>
-          <li>If a player can't match the card in the Discard Pile, they must draw a card from the Draw Pile.</li>
-          <li>If a player draws a playable card, they can play it immediately. Otherwise, play moves to the next player.</li>
+          <li>
+            The top card of the Draw Pile is turned over to begin a Discard
+            Pile.
+          </li>
+          <li>
+            The first player has to match the card in the Discard Pile either by
+            number, color, or word.
+          </li>
+          <li>
+            If a player can't match the card in the Discard Pile, they must draw
+            a card from the Draw Pile.
+          </li>
+          <li>
+            If a player draws a playable card, they can play it immediately.
+            Otherwise, play moves to the next player.
+          </li>
           <li>The game continues until one player has no cards left.</li>
         </ul>
         <h2>Special Cards</h2>
         <ul id="special-cards">
-          <li><strong>Wild Card:</strong> Allows the player to choose the color of play.</li>
-          <li><strong>Wild Draw Four Card:</strong> Allows the player to choose the color of play and requires the next player to draw four cards from the Draw Pile.</li>
-          <li><strong>Draw Two Card:</strong> Requires the next player to draw two cards from the Draw Pile.</li>
-          <li><strong>Reverse Card:</strong> Reverses the direction of play.</li>
+          <li>
+            <strong>Wild Card:</strong> Allows the player to choose the color of
+            play.
+          </li>
+          <li>
+            <strong>Wild Draw Four Card:</strong> Allows the player to choose
+            the color of play and requires the next player to draw four cards
+            from the Draw Pile.
+          </li>
+          <li>
+            <strong>Draw Two Card:</strong> Requires the next player to draw two
+            cards from the Draw Pile.
+          </li>
+          <li>
+            <strong>Reverse Card:</strong> Reverses the direction of play.
+          </li>
           <li><strong>Skip Card:</strong> Skips the next player's turn.</li>
         </ul>
       </main>
-      <footer class="footer">
-        <%- include('partials/footer') %>
-      </footer>
+      <footer class="footer"><%- include('partials/footer') %></footer>
     </div>
     <script src="/scripts/uno.js"></script>
   </body>
