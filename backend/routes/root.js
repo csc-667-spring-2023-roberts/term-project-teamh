@@ -187,14 +187,14 @@ router.get("/game", isAuthenticated, (request, response) => {
   let x = result.players.length * 7;
   for (let i = 0; i < result.players.length; i++) {
     const hands = c.slice(0, 7);
-    //console.log(hands);
     result.players[i].hands = hands;
     result.deck.splice(0, 7);
-    //console.log(result.deck.length);
   }
 
+  let firstdiscard = result.deck[0];
+  result.deck.splice(0, 1);
+
   player = getPlayerByRoomAndName(request.query.room, request.session.user);
-  console.log(player);
 
   let roomchat = getRoomChatByName(request.query.room);
 
@@ -209,6 +209,7 @@ router.get("/game", isAuthenticated, (request, response) => {
     players: result.players,
     me: player,
     chats: chats,
+    firstdiscard: firstdiscard,
   });
 });
 router.get("/game", (request, response) => {
