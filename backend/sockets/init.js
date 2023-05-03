@@ -1,7 +1,7 @@
 const http = require("http");
 const { Server } = require("socket.io");
 
-const { getPlayerByRoomAndName, updateRoomChat, getRoomByName } = require("../room");
+const { getPlayerByRoomAndName, updateRoomChat, getRoomByName, getNextPlayerByRoom } = require("../room");
 const { getCards } = require("../deck");
 const initSockets = (app, sessionMiddleware) => {
   const server = http.createServer(app);
@@ -69,7 +69,19 @@ const initSockets = (app, sessionMiddleware) => {
       console.log(me.hands.length);
 
       message = JSON.stringify(message);
-      io.emit("discardcard", message);
+      io.in(payload.room).emit("discardcard", message);
+
+      console.log(" next player: ");
+      let nextplayer = getNextPlayerByRoom(payload.room);
+      console.log(" next player: ");
+      console.log(nextplayer);
+      message = {
+        player: nextplayer.name,
+      };
+      message = JSON.stringify(message);
+      console.log("message" + message);
+      io.in(payload.room).emit("whosturn", message);
+        
     });
   });
 

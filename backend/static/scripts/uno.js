@@ -21,9 +21,10 @@ socket.on("draw", function (event) {
   imgElement.style.width = "98px";
   imgElement.style.height = "136px";
   imgElement.setAttribute("cardid", message.data.value);
+  imgElement.setAttribute("disabled", false);
   imgElement.setAttribute(
     "onclick",
-    `discardCard(this.src, ${message.data.value})`
+    `discardCard(this, this.src, ${message.data.value})`
   );
   document.getElementById("cardarea").append(imgElement);
   // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
@@ -43,6 +44,36 @@ socket.on("discardcard", function (event) {
   let old = document.getElementById("discardimg");
   document.getElementById("discardpile").removeChild(old);
   document.getElementById("discardpile").append(imgElement);
+});
+
+socket.on("whosturn", function (event) {
+  console.log("from server: whosturn");
+  console.log(event);
+  message = JSON.parse(event);
+  console.log(message);
+
+  let x = sessionStorage.getItem("login");
+  console.log(x);
+
+  let user = JSON.parse(x);
+  const btn = document.getElementById("drawbutton");
+  console.log(btn);
+  if (user.username === message.player) {
+    console.log(user.username + " playing now")
+    btn.disabled = false;
+  } else {
+    btn.disabled = true;
+  }
+  console.log(btn);
+  let cardArea = document.getElementById("cardarea");
+  let childs = cardArea.children;
+  console.log(childs);
+  for (let i = 0; i < childs.length; i++) {
+    let el = childs[i];
+    console.log(el.getAttribute("disabled"));
+    el.setAttribute("disabled", btn.disabled);
+  }
+
 });
 
 function sendMessage(event) {
@@ -86,7 +117,10 @@ function drawCard() {
   socket.emit("draw", JSON.stringify(message));
 }
 
-function discardCard(imgsrc, id) {
+function discardCard(img, imgsrc, id) {
+  console.log(img.getAttribute("disabled"));
+  if (img.getAttribute("disabled") === 'true') 
+    return;
   console.log(id);
   let curDiscardCard = document.getElementById("discardimg");
   let discardCardId = curDiscardCard.getAttribute("cardid");

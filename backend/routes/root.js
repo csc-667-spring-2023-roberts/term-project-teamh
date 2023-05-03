@@ -5,6 +5,7 @@ const {
   getRoomByName,
   getRoomChatByName,
   getPlayerByRoomAndName,
+  getCurrentPlayerByRoom,
 } = require("../room");
 const { getCards, shuffle } = require("../deck");
 
@@ -132,6 +133,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     name: request.body.roomname,
     host: request.session.user,
     players: [{ name: request.session.user, hands: [] }],
+    currentplayer: 0,
   });
   roomchats.push({
     name: request.body.roomname,
@@ -200,9 +202,14 @@ router.get("/game", isAuthenticated, (request, response) => {
 
   let chats = [];
 
+  let curplayer = getCurrentPlayerByRoom(request.query.room);
+  
   if (roomchat !== undefined) {
     chats = roomchat.chats;
   }
+  console.log((curplayer.name))
+  console.log((player.name))
+  console.log((curplayer.name === player.name))
   response.render("game", {
     roomname: result.name,
     host: result.host,
@@ -210,6 +217,7 @@ router.get("/game", isAuthenticated, (request, response) => {
     me: player,
     chats: chats,
     firstdiscard: firstdiscard,
+    myturn: (curplayer.name === player.name)
   });
 });
 router.get("/game", (request, response) => {
