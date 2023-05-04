@@ -177,6 +177,18 @@ router.get("/waitingroom", (request, response) => {
   response.redirect("/");
 });
 
+router.get("/startgame", isAuthenticated, (request, response) => {
+  console.log("----startgame----");
+
+  const io = request.app.get("io");
+  let message = JSON.stringify({room: request.query.room});
+  io.in(request.query.room).emit("startgame", message);
+
+  const query = querystring.stringify(request.query);
+  console.log(query);
+  response.redirect("/game?" + query);
+});
+
 router.get("/game", isAuthenticated, (request, response) => {
   console.log("----game----");
   let result = getRoomByName(request.query.room);

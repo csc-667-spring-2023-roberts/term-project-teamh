@@ -14,6 +14,16 @@ const initSockets = (app, sessionMiddleware) => {
     _socket.on("disconnect", () => {
       console.log("user disconnected");
     });
+    _socket.on("joinroom", (data) => {
+      let payload = JSON.parse(data);
+      console.log(payload);
+      console.log("----joinroom");
+      _socket.join(payload.room);
+      let message = {
+        data: 'Joined', user: payload.user, room: payload.room
+      }
+      io.in(payload.room).emit("chat", JSON.stringify(message));
+    });    
     _socket.on("chat", (data) => {
       let payload = JSON.parse(data);
       console.log(payload);

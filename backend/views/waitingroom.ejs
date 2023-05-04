@@ -18,7 +18,7 @@
           room: room.value,
         };
 
-        console.log(socket);
+        console.log(message);
         socket.emit("joinroom", JSON.stringify(message));
       }
     </script>
@@ -38,7 +38,7 @@
           <% }); %>
         </div>
 
-        <a href="\game?room=<%= roomname %>"> Start game</a>
+        <a href="\startgame?room=<%= roomname %>"> Start game</a>
       </main>
       <aside class="sidebar">
         <h2>Chat</h2>

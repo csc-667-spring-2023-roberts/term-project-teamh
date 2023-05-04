@@ -3,6 +3,13 @@ socket.on("connect", function () {
   console.log("Client has connected to the server!");
 });
 
+socket.on("startgame", function (event) {
+  console.log("startgame");
+  console.log(event);
+  message = JSON.parse(event);
+  window.location.href = "/game?room="+message.room;
+});
+
 socket.on("chat", function (event) {
   console.log("chat");
   console.log(event);
