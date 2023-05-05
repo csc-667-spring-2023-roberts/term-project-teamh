@@ -61,7 +61,7 @@
           <br>
           <div id="cardarea">
             <% me.hands.forEach((h) => { %>
-              <img src='<%= h.src %>' width="98px" height="136px" disabled="<%= !myturn %>" onClick="discardCard(this, this.src, <%= h.value %>)" cardid="<%= h.value %>"/>
+              <img src='<%= h.src %>' width="98px" height="136px" disabled="<%= !myturn %>" onClick="discardCard(this, this.src, <%= h.cardId %>)" cardid="<%= h.cardId %>"/>
               <% }); 
             %>
           </div>

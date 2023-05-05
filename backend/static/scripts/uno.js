@@ -27,11 +27,11 @@ socket.on("draw", function (event) {
   imgElement.src = message.data.src;
   imgElement.style.width = "98px";
   imgElement.style.height = "136px";
-  imgElement.setAttribute("cardid", message.data.value);
+  imgElement.setAttribute("cardid", message.data.cardId);
   imgElement.setAttribute("disabled", false);
   imgElement.setAttribute(
     "onclick",
-    `discardCard(this, this.src, ${message.data.value})`
+    `discardCard(this, this.src, ${message.data.cardId})`
   );
   document.getElementById("cardarea").append(imgElement);
   // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
@@ -125,38 +125,52 @@ function drawCard() {
 }
 
 function discardCard(img, imgsrc, id) {
+  var room = document.getElementById("room");
   console.log(img.getAttribute("disabled"));
   if (img.getAttribute("disabled") === 'true') 
     return;
-  console.log(id);
-  let curDiscardCard = document.getElementById("discardimg");
-  let discardCardId = curDiscardCard.getAttribute("cardid");
-  console.log("discardCardId:" + discardCardId);
-  var room = document.getElementById("room");
-  let x = sessionStorage.getItem("login");
-  let user = JSON.parse(x);
-  console.log(user);
-  const message = {
-    event: "discard",
-    data: {
-      imgsrc: imgsrc,
-      id: id,
-    },
-    user: user.username,
-    room: room.value,
-  };
 
-  let cardArea = document.getElementById("cardarea");
-  let childs = cardArea.children;
-  console.log(childs);
-  for (let i = 0; i < childs.length; i++) {
-    let el = childs[i];
-    console.log(el.getAttribute("cardid"));
-    if (el.getAttribute("cardid") === id + "") {
-      console.log("discard card" + id);
-      cardArea.removeChild(el);
-      break;
+  console.log('-------');
+
+  socket.emit("candiscardcard", JSON.stringify({
+      cardid: id,
+      room: room.value,
+    }), (response)=>{
+    console.log(response);
+    if (response.status === 'ok') {
+      console.log('-------2');
+      console.log(id);
+      let curDiscardCard = document.getElementById("discardimg");
+      let discardCardId = curDiscardCard.getAttribute("cardid");
+      console.log("discardCardId:" + discardCardId);
+      
+      let x = sessionStorage.getItem("login");
+      let user = JSON.parse(x);
+      console.log(user);
+      const message = {
+        event: "discard",
+        data: {
+          imgsrc: imgsrc,
+          id: id,
+        },
+        user: user.username,
+        room: room.value,
+      };
+    
+      let cardArea = document.getElementById("cardarea");
+      let childs = cardArea.children;
+      console.log(childs);
+      for (let i = 0; i < childs.length; i++) {
+        let el = childs[i];
+        console.log(el.getAttribute("cardid"));
+        if (el.getAttribute("cardid") === id + "") {
+          console.log("discard card" + id);
+          cardArea.removeChild(el);
+          break;
+        }
+      }
+      socket.emit("discardcard", JSON.stringify(message));
     }
-  }
-  socket.emit("discardcard", JSON.stringify(message));
+  });
+
 }

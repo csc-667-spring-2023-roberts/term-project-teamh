@@ -2,7 +2,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const { getPlayerByRoomAndName, updateRoomChat, getRoomByName, getNextPlayerByRoom } = require("../room");
-const { getCards } = require("../deck");
+const { getCards, getCardsById } = require("../deck");
 const initSockets = (app, sessionMiddleware) => {
   const server = http.createServer(app);
   const io = new Server(server);
@@ -58,6 +58,24 @@ const initSockets = (app, sessionMiddleware) => {
       console.log("message" + message);
       io.in(_socket.id).emit("draw", message);
     });
+    _socket.on("candiscardcard", (data, callback) => {
+      let payload = JSON.parse(data);
+      console.log(payload);
+      let room = getRoomByName(payload.room);
+      console.log(room.discardcard);
+      let card = getCardsById(payload.cardid);
+      
+      if (card.color === room.discardcard.color || card.value === room.discardcard.value) {
+        callback({
+          status: "ok"
+        });
+      } else {
+        callback({
+          status: "no"
+        });         
+      }
+    });
+
     _socket.on("discardcard", (data) => {
       let payload = JSON.parse(data);
       console.log("discardcard");
@@ -66,16 +84,19 @@ const initSockets = (app, sessionMiddleware) => {
         cardimg: payload.data.imgsrc,
         cardid: payload.data.id,
       };
+      let room = getRoomByName(payload.room);
       let me = getPlayerByRoomAndName(payload.room, payload.user);
       console.log(me.hands);
       let index = me.hands.findIndex((h) =>
       {
-        if (h.value === payload.data.id) {
+        if (h.cardId === payload.data.id) {
           return true;
         }
       });
       console.log(index);
-      me.hands.splice(index, 1);
+      let dis = me.hands.splice(index, 1);
+      room.discardcard = dis[0];
+      console.log(dis);
       console.log(me.hands.length);
 
       message = JSON.stringify(message);
