@@ -138,6 +138,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     host: request.session.user,
     players: [{ name: request.session.user, hands: [] }],
     currentplayer: 0,
+    discardcard: {},
     status: 'Waiting'
   });
   roomchats.push({
@@ -185,6 +186,23 @@ router.get("/waitingroom", (request, response) => {
 router.get("/startgame", isAuthenticated, (request, response) => {
   console.log("----startgame----");
 
+  let result = getRoomByName(request.query.room);
+  result.status = 'In Progress'
+  let c = getCards().map((x) => x);
+  c = shuffle(c);
+  result.deck = c;
+
+  let x = result.players.length * 7;
+  for (let i = 0; i < result.players.length; i++) {
+    const hands = c.slice(0, 7);
+    result.players[i].hands = hands;
+    result.deck.splice(0, 7);
+  }
+
+  let firstdiscard = result.deck[0];
+  result.deck.splice(0, 1);
+  result.discardcard = firstdiscard;
+
   const io = request.app.get("io");
   let message = JSON.stringify({room: request.query.room});
   io.in(request.query.room).emit("startgame", message);
@@ -196,22 +214,8 @@ router.get("/startgame", isAuthenticated, (request, response) => {
 
 router.get("/game", isAuthenticated, (request, response) => {
   console.log("----game----");
+
   let result = getRoomByName(request.query.room);
-  result.status = 'In Progress'
-  let c = getCards().map((x) => x);
-  c = shuffle(c);
-  result.deck = c;
-  //console.log(result.deck.length);
-
-  let x = result.players.length * 7;
-  for (let i = 0; i < result.players.length; i++) {
-    const hands = c.slice(0, 7);
-    result.players[i].hands = hands;
-    result.deck.splice(0, 7);
-  }
-
-  let firstdiscard = result.deck[0];
-  result.deck.splice(0, 1);
 
   player = getPlayerByRoomAndName(request.query.room, request.session.user);
 
@@ -233,7 +237,7 @@ router.get("/game", isAuthenticated, (request, response) => {
     players: result.players,
     me: player,
     chats: chats,
-    firstdiscard: firstdiscard,
+    firstdiscard: result.discardcard,
     myturn: (curplayer.name === player.name)
   });
 });

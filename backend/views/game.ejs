@@ -3,6 +3,25 @@
 
 <head>
   <%- include('partials/head'); %>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/scripts/uno.js"></script>
+  <script>
+    function onload(e) {
+      console.log("onload");
+      var room = document.getElementById("room");
+      let x = sessionStorage.getItem("login");
+      let user = JSON.parse(x);
+
+      const message = {
+        event: "joinroom",
+        user: user.username,
+        room: room.value,
+      };
+
+      console.log(message);
+      socket.emit("joinroom", JSON.stringify(message));
+    }
+  </script>
 </head>
 <style>
   .game-container {
@@ -22,7 +41,7 @@
   }
 </style>
 
-<body>
+<body onload="onload()">
   <div class="container">
     <%- include('partials/header'); %>
 
@@ -86,8 +105,6 @@
         <%- include('partials/footer'); %>
       </footer>
   </div>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/scripts/uno.js">  </script>
 </body>
 
 </html>
