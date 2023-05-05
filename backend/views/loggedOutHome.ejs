@@ -18,7 +18,15 @@
         </div>
         <div class="content-wrapper">
           <div class="stats-block">stats block</div>
-          <div class="current-games">current games</div>
+          <div class="current-games">current games
+            <div>
+              <% openrooms.forEach(function(room) { %>
+              <li>
+                <%= room.name %> - <%= room.players.length %> players - Status: <%= room.status %>
+              </li>
+              <% }); %>
+            </div>
+          </div>
         </div>
       </main>
 

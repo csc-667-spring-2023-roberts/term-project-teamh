@@ -41,6 +41,7 @@ router.get("/", isAuthenticated, (request, response) => {
     title: "Welcome to Uno!",
     user: request.session.user,
     openrooms: rooms,
+    login: true
   });
 });
 router.get("/login", (_request, response) => {
@@ -80,7 +81,10 @@ router.post("/joingame", (request, response) => {
 });
 
 router.get("/", function (_request, response) {
-  response.render("loggedOutHome", {});
+  console.log(rooms);
+  response.render("loggedOutHome", {
+    openrooms: rooms,
+  });
 });
 
 router.post(
@@ -134,6 +138,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     host: request.session.user,
     players: [{ name: request.session.user, hands: [] }],
     currentplayer: 0,
+    status: 'Waiting'
   });
   roomchats.push({
     name: request.body.roomname,
@@ -192,7 +197,7 @@ router.get("/startgame", isAuthenticated, (request, response) => {
 router.get("/game", isAuthenticated, (request, response) => {
   console.log("----game----");
   let result = getRoomByName(request.query.room);
-
+  result.status = 'In Progress'
   let c = getCards().map((x) => x);
   c = shuffle(c);
   result.deck = c;

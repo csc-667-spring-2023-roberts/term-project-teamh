@@ -4,12 +4,13 @@ rooms = [
     host: "abc",
     deck: [],
     currentplayer: 0,
+    status: 'Waiting',
     players: [
       { name: "player1", hands: [] },
       { name: "asdf", hands: [] },
     ],
   },
-  { name: "room2", host: "xyz", currentplayer: 0, deck: [], players: [] },
+  { name: "room2", host: "xyz", currentplayer: 0, status: 'Waiting', deck: [], players: [] },
 ];
 roomchats = [
   {

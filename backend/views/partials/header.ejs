@@ -1,1 +1,8 @@
-<header class="header">UNO<a href="/logout">logout </a></header>
+<header class="header">UNO
+  <% if(locals.login){ %>
+    <a href="/logout">logout </a>  
+  <% } else{ %>  
+    
+ <% } %>
+  
+</header>
