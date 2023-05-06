@@ -60,18 +60,28 @@ const handleJoinRoom = (io, socket, data) => {
 const handleDrawCard = (io, socket, data) => {
   let payload = JSON.parse(data);
   console.log("draw");
-  let cards = getCards();
 
   let room = getRoomByName(payload.room);
+  let me = getPlayerByRoomAndName(payload.room, payload.user);
+  
+  let index = me.hands.findIndex((c) =>
+  {
+    if (c.color === room.discardcard.color || c.value === room.discardcard.value) {
+      return true;
+    }
+  });
+  
+  console.log('---- index' + index);
+  if (index >= 0) {
+    return;
+  }
   console.log(room.deck.length);
 
-  // let num = Math.floor(Math.random() * cards.length);
   message = {
     event: "draw",
     data: room.deck[0],
   };
 
-  let me = getPlayerByRoomAndName(payload.room, payload.user);
   console.log(me.hands.length)
   me.hands.push(room.deck[0]);
   console.log(me.hands.length)
@@ -81,6 +91,13 @@ const handleDrawCard = (io, socket, data) => {
   message = JSON.stringify(message);
   console.log("message" + message);
   io.in(socket.id).emit("draw", message);
+
+  message = {
+    cardsleft: room.deck.length - 1,
+  };
+  message = JSON.stringify(message);
+  io.in(payload.room).emit("update-cards-left", message);
+
 }
 
 const handleDiscardCard = (io, socket, data) => {

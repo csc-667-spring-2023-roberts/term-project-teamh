@@ -238,6 +238,7 @@ router.get("/game", isAuthenticated, (request, response) => {
     me: player,
     chats: chats,
     firstdiscard: result.discardcard,
+    cardsleft: result.deck.length,
     myturn: (curplayer.name === player.name)
   });
 });

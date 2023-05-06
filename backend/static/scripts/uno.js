@@ -10,6 +10,13 @@ socket.on("startgame", function (event) {
   window.location.href = "/game?room="+message.room;
 });
 
+socket.on("update-cards-left", function (event) {
+  console.log("update-cards-left");
+  console.log(event);
+  message = JSON.parse(event);
+  document.getElementById("cardsleft").innerHTML =
+    message.cardsleft + " cards left";
+});
 socket.on("chat", function (event) {
   console.log("chat");
   console.log(event);
