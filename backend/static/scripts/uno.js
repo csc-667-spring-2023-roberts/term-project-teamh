@@ -26,6 +26,18 @@ socket.on("chat", function (event) {
   document.getElementById("chatbox").scrollTop =
     document.getElementById("chatbox").scrollHeight;
 });
+socket.on("waitroom-update", function (data) {
+  console.log("waitroom-update");
+  console.log(data);
+  room = JSON.parse(data);
+
+  let players = "";
+  for (let i = 0; i < room.players.length; i++) {
+    players += '<li>' + room.players[i].name + "</li>";
+  }
+
+  document.getElementById("players").innerHTML = players;
+});
 socket.on("draw", function (event) {
   console.log("draw");
   console.log(event);

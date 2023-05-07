@@ -157,7 +157,7 @@ router.post("/newgame", (request, response) => {
 
 router.get("/waitingroom", isAuthenticated, (request, response) => {
   console.log("----waitingroom----");
-  let result = getRoomByName(request.query.room);
+  let room = getRoomByName(request.query.room);
   //console.log(result)
   let roomchat = getRoomChatByName(request.query.room);
   //console.log(roomchat)
@@ -172,10 +172,11 @@ router.get("/waitingroom", isAuthenticated, (request, response) => {
       chats = roomchat.chats;
     }
     response.render("waitingroom", {
-      roomname: result.name,
-      host: result.host,
-      players: result.players,
+      roomname: room.name,
+      host: room.host,
+      players: room.players,
       chats: chats,
+      ishost: (room.host===me.name),
     });
   }
 });

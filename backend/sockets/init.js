@@ -55,6 +55,9 @@ const handleJoinRoom = (io, socket, data) => {
     data: 'Joined', user: payload.user, room: payload.room
   }
   io.in(payload.room).emit("chat", JSON.stringify(message));
+  
+  let room = getRoomByName(payload.room);
+  io.in(payload.room).emit("waitroom-update", JSON.stringify(room));
 }
 
 const handleDrawCard = (io, socket, data) => {
