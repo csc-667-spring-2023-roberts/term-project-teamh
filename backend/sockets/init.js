@@ -101,6 +101,26 @@ const handleDrawCard = (io, socket, data) => {
   message = JSON.stringify(message);
   io.in(payload.room).emit("update-cards-left", message);
 
+  index = me.hands.findIndex((c) =>
+  {
+    if (c.color === room.discardcard.color || c.value === room.discardcard.value) {
+      return true;
+    }
+  });
+  
+  console.log('---- index' + index);
+  if (index == -1) {
+    console.log(" next player: ");
+    let nextplayer = getNextPlayerByRoom(payload.room);
+    console.log(" next player: ");
+    console.log(nextplayer);
+    message = {
+      player: nextplayer.name,
+    };
+    message = JSON.stringify(message);
+    console.log("message" + message);
+    io.in(payload.room).emit("whosturn", message);
+  }
 }
 
 const handleDiscardCard = (io, socket, data) => {

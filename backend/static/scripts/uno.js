@@ -53,7 +53,8 @@ socket.on("draw", function (event) {
     `discardCard(this, this.src, ${message.data.cardId})`
   );
   document.getElementById("cardarea").append(imgElement);
-  // document.getElementById('cardarea').innerHTML = "<img src=\"" + message.data.src + "\"/>";
+  const btn = document.getElementById("drawbutton");
+  btn.disabled = true;
 });
 
 socket.on("discardcard", function (event) {
@@ -124,7 +125,6 @@ function sendMessage(event) {
   inputMessage.value = "";
   event.preventDefault();
 }
-//document.getElementById('input-form').addEventListener('submit', sendMessage);
 
 function drawCard() {
   var room = document.getElementById("room");
