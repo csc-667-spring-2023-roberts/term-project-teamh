@@ -2,32 +2,56 @@
 <html lang="en"> 
 
 <head>
-    <title> <%= createGame %> </title>  
-    <link rel="stylesheet" href="/styles/home.css" />
-    <main> 
+  <title>
+    <%= title %>
+  </title>
+  <link rel="stylesheet" href="/stylesheets/home.css" />
+  <script>
+    function startNewGame(e) {
+      console.log("startNewGame");
+      var room = document.getElementById("roomname");
+
+      let x = sessionStorage.getItem("login");
+      //console.log(x);
+
+      let user = JSON.parse(x);
+
+      const message = {
+        event: "joinroom",
+        user: user.username,
+        room: room.value,
+      };
+
+      //alert(e);
+      socket.emit("joinroom", JSON.stringify(message));
+      //e.preventDefault();
+    }
+  </script>  
 </head>
-<body> 
-    <div>
-    <form id="create-game" action=" /createGame" method = "post"></form>
-    <label for="RoomName"> Room Name: </label> <input id="gameID" type="text" name="user" <br>
-    <label for = "Password"> Password:</label> <input pass= "gamePass" type = "password" <br> 
-    <label for = "Players" > Number of Players: </label> <input players = "number" type = "text" name= "players"> <br>
-    <input type= "submit">
-    <label for="message">Message:</label>
-      <input
-          id="message"
-          type="text"
-          name="message"/>
-      <br /><br /><input type="submit" value="Send" />
-    <div id="chatbox"></div>
-  </form>
-</div>
 
-</main>
+<body class="signup-body">
+  <ul class="nav">
+    <li><a href="/">Home</a></li>
+  </ul>
 
+  <div class="signUp-container">
+    <form id="create-game" action="newgame" method="post" class="signup-form" onsubmit="startNewGame(event)">
+      <label for="roomname"> 
+        <em>Room Name: </em>
+        <input class="input-field" id="roomname" type="text" name="roomname" />
+      </label> 
+      <label for="password"> 
+        <em>Password:</em>
+        <input class="input-field" pass="gamePass" type="password" /> 
+      </label>         
+      <label> 
+        <em>Number of Players:</em> 
+        <input class="input-field" players="number" type="text" name="players" value="4"/> 
+      </label> 
+      <input class="submit-btn" type="submit" />
+    </form>
+  </div>
 
-<footer class "footer"> <%- include ('partials/footer')></footer>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/scripts/uno.js"></script>
+  <footer class="footer"> <%- include ('partials/footer')%></footer>
 </body>
 </html>
