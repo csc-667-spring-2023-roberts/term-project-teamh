@@ -194,6 +194,7 @@ body.signup-body {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
+  
 }
 
 h1 {
@@ -223,6 +224,7 @@ h1 {
 .signup-form {
   display: grid;
   grid-gap: 15px;
+  padding: 120px;
 }
 
 .input-field {
@@ -239,6 +241,7 @@ label em {
   font-weight: bold;
   font-size: 14px;
 }
+
 
 .terms {
   display: flex;
@@ -320,10 +323,11 @@ label em {
 .nav-list li a {
   display: inline-block;
   padding: 10px;
-  background-color: #eee;
+  background-color: royalblue;
   margin-right: 10px;
+  color: white; 
 }
 
 .nav li a:hover {
-  background-color: #ddd;
+  background-color: #007bff;
 }
