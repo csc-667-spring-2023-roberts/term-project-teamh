@@ -74,12 +74,28 @@ p {
   border-style: solid;
 }
 
-.header {
+.headers {
   font-size: 1em;
   text-align: center;
   grid-column-start: 1;
   grid-column-end: -1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.headers h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+.headers a {
+  color: white;
+  text-decoration: underline;
+}
+
 
 .container > * {
   background-color: royalblue;
@@ -285,4 +301,29 @@ label em {
 
 .signup-text{
   text-align: center;
+}
+
+#rules,
+#special-cards {
+  display: none;
+}
+
+#rules:target,
+#special-cards:target {
+  display: block;
+}
+
+#rules:target {
+  display: block;
+}
+
+.nav-list li a {
+  display: inline-block;
+  padding: 10px;
+  background-color: #eee;
+  margin-right: 10px;
+}
+
+.nav li a:hover {
+  background-color: #ddd;
 }
