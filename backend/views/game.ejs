@@ -76,8 +76,8 @@
       <aside class="sidebar">
         <h1>Room: <%= roomname %> </h1>
         <p>Host: <%= host %></p>
-        <div>
-          Players
+        Players
+        <div id="players">
           <% players.forEach(function(p) { %>
             <li>
                 <%= p.name %>

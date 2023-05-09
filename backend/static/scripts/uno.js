@@ -79,6 +79,7 @@ socket.on("whosturn", function (event) {
   message = JSON.parse(event);
   console.log(message);
 
+  var room = document.getElementById("room");
   let x = sessionStorage.getItem("login");
   console.log(x);
 
@@ -99,6 +100,20 @@ socket.on("whosturn", function (event) {
     let el = childs[i];
     console.log(el.getAttribute("disabled"));
     el.setAttribute("disabled", btn.disabled);
+  }
+
+  if (user.username === message.player) {
+    const message = {
+      user: user.username,
+      room: room.value,
+    };
+    console.log("should I end turn?")
+    socket.emit("shouldEndTurn", JSON.stringify(message), (response)=>{
+      console.log(response)
+      if (response.status === 'yes') {
+        socket.emit("endTurn", JSON.stringify(message));
+      }
+    });
   }
 
 });

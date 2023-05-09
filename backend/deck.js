@@ -42,7 +42,7 @@ const getCards = () => {
     cardId: cardId++,
     color: "blue",
     src: "/images/blue_skip.png",
-    type: "reverse",
+    type: "skip",
     value: -1,
   };
   cards.push(card);
@@ -87,7 +87,7 @@ const getCards = () => {
     cardId: cardId++,
     color: "red",
     src: "/images/red_skip.png",
-    type: "reverse",
+    type: "skip",
     value: -1,
   };
   cards.push(card);
@@ -133,7 +133,7 @@ const getCards = () => {
     cardId: cardId++,
     color: "green",
     src: "/images/green_skip.png",
-    type: "reverse",
+    type: "skip",
     value: -1,
   };
   cards.push(card);
@@ -179,7 +179,7 @@ const getCards = () => {
     cardId: cardId++,
     color: "yellow",
     src: "/images/yellow_skip.png",
-    type: "reverse",
+    type: "skip",
     value: -1,
   };
   cards.push(card);

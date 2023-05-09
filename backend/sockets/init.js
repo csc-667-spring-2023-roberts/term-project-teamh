@@ -29,6 +29,12 @@ const initSockets = (app, sessionMiddleware) => {
     _socket.on("discardcard", (data) => {
       handleDiscardCard(io, _socket, data);        
     });
+    _socket.on("shouldEndTurn", (data, callback) => {
+      handleShouldEndTurn(io, _socket, data, callback);        
+    });
+    _socket.on("endTurn", (data) => {
+      handleEndTurn(io, _socket, data);        
+    });
   });
 
   app.set("io", io);
@@ -67,47 +73,51 @@ const handleDrawCard = (io, socket, data) => {
   let room = getRoomByName(payload.room);
   let me = getPlayerByRoomAndName(payload.room, payload.user);
   
+  // can I draw
   let index = me.hands.findIndex((c) =>
   {
-    if (c.color === room.discardcard.color || c.value === room.discardcard.value) {
+    if (c.color === room.discardcard.color || 
+      (c.type === 'number' && c.value === room.discardcard.value)) {
       return true;
     }
   });
   
   console.log('---- index' + index);
+  // if index >= 0, it means there is a valid card to discard
+  // don't draw card
   if (index >= 0) {
     return;
   }
   console.log(room.deck.length);
 
   message = {
-    event: "draw",
     data: room.deck[0],
   };
 
-  console.log(me.hands.length)
+  // tell client that a card is drawed
   me.hands.push(room.deck[0]);
-  console.log(me.hands.length)
-
   room.deck.splice(0, 1);
-
   message = JSON.stringify(message);
   console.log("message" + message);
   io.in(socket.id).emit("draw", message);
 
+  // tell all clients to update remaining card count
   message = {
-    cardsleft: room.deck.length - 1,
+    cardsleft: room.deck.length,
   };
   message = JSON.stringify(message);
   io.in(payload.room).emit("update-cards-left", message);
 
+  // after a card is drawn, can I discard this card?
   index = me.hands.findIndex((c) =>
   {
-    if (c.color === room.discardcard.color || c.value === room.discardcard.value) {
+    if (c.color === room.discardcard.color 
+      || (c.type === 'number' && c.value === room.discardcard.value)) {
       return true;
     }
   });
   
+  // there is no card to discard, tell everyone there is a next turn
   console.log('---- index' + index);
   if (index == -1) {
     console.log(" next player: ");
@@ -168,7 +178,8 @@ const handleCanDiscardCard = (socket, data, callback) => {
   console.log(room.discardcard);
   let card = getCardsById(payload.cardid);
   
-  if (card.color === room.discardcard.color || card.value === room.discardcard.value) {
+  if (card.color === room.discardcard.color 
+    || (card.value === room.discardcard.value && card.type === 'number')) {
     callback({
       status: "ok"
     });
@@ -177,6 +188,71 @@ const handleCanDiscardCard = (socket, data, callback) => {
       status: "no"
     });         
   }
+}
+
+const handleShouldEndTurn = (io, socket, data, callback) => {
+  console.log("---handleShouldEndTurn---")
+  let payload = JSON.parse(data);
+  console.log(payload);
+  let room = getRoomByName(payload.room);
+  let me = getPlayerByRoomAndName(payload.room, payload.user);
+
+  if (room.discardcard.value == -1 && 
+    (room.discardcard.type === 'pick2' || room.discardcard.type === 'skip')) {
+    if (room.discardcard.type === 'pick2') {
+      message = {
+        data: room.deck[0],
+      };
+    
+      me.hands.push(room.deck[0]);   
+      room.deck.splice(0, 1);
+    
+      message = JSON.stringify(message);
+      console.log("message" + message);
+      io.in(socket.id).emit("draw", message);
+
+      message = {
+        data: room.deck[0],
+      };
+    
+      me.hands.push(room.deck[0]);   
+      room.deck.splice(0, 1);
+    
+      message = JSON.stringify(message);
+      console.log("message" + message);
+      io.in(socket.id).emit("draw", message);
+
+      message = {
+        cardsleft: room.deck.length,
+      };
+      message = JSON.stringify(message);
+      io.in(payload.room).emit("update-cards-left", message);
+      
+    }
+    room.discardcard.value = -2;
+    callback({
+      status: "yes"
+    });
+  } else {
+    callback({
+      status: "no"
+    });         
+  }  
+}
+const handleEndTurn = (io, socket, data) => {
+  console.log("---handleEndTurn---")
+  let payload = JSON.parse(data);
+  console.log(payload);
+  let nextplayer = getNextPlayerByRoom(payload.room);
+  console.log(" next player: ");
+  console.log(nextplayer);
+  message = {
+    player: nextplayer.name,
+  };
+  message = JSON.stringify(message);
+  console.log("message" + message);
+  io.in(payload.room).emit("whosturn", message);
+
 }
 
 module.exports = initSockets;
