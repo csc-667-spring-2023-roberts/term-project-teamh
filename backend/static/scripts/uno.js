@@ -171,7 +171,7 @@ function discardCard(img, imgsrc, id) {
       room: room.value,
     }), (response)=>{
     console.log(response);
-    if (response.status === 'ok') {
+    if (response.status === 'yes') {
       console.log('-------2');
       console.log(id);
       let curDiscardCard = document.getElementById("discardimg");

@@ -6,12 +6,13 @@ rooms = [
     currentplayer: 0,
     status: 'Waiting',
     discardcard: {},
+    reverse: false,
     players: [
       { name: "player1", hands: [] },
       { name: "asdf", hands: [] },
     ],
   },
-  { name: "room2", host: "xyz", currentplayer: 0, status: 'Waiting', discardcard: {}, deck: [], players: [] },
+  { name: "room2", host: "xyz", currentplayer: 0, status: 'Waiting', reverse: false, discardcard: {}, deck: [], players: [] },
 ];
 roomchats = [
   {
@@ -72,10 +73,18 @@ const getNextPlayerByRoom = (room) => {
     //console.log(roomobj);
     let i = roomobj.currentplayer;
     console.log(i);
-    if (roomobj.currentplayer === roomobj.players.length-1) {
-      i = 0;
+    if (roomobj.reverse === false) {
+      if (roomobj.currentplayer === roomobj.players.length-1) {
+        i = 0;
+      } else {
+        i++;
+      }
     } else {
-      i++;
+      if (roomobj.currentplayer === 0) {
+        i = roomobj.players.length - 1;
+      } else {
+        i--;
+      }
     }
     roomobj.currentplayer = i;
     //console.log(roomobj);

@@ -137,13 +137,10 @@ const handleDiscardCard = (io, socket, data) => {
   let payload = JSON.parse(data);
   console.log("discardcard");
   console.log(payload);
-  var message = {
-    cardimg: payload.data.imgsrc,
-    cardid: payload.data.id,
-  };
   let room = getRoomByName(payload.room);
   let me = getPlayerByRoomAndName(payload.room, payload.user);
   console.log(me.hands);
+  // find the card the user is discarding in their hand
   let index = me.hands.findIndex((h) =>
   {
     if (h.cardId === payload.data.id) {
@@ -151,14 +148,25 @@ const handleDiscardCard = (io, socket, data) => {
     }
   });
   console.log(index);
-  let dis = me.hands.splice(index, 1);
+  let dis = me.hands.splice(index, 1);  // remove it from the hand
   room.discardcard = dis[0];
   console.log(dis);
   console.log(me.hands.length);
 
+  // tell all clients a card is discarded
+  var message = {
+    cardimg: payload.data.imgsrc,
+    cardid: payload.data.id,
+  };
   message = JSON.stringify(message);
   io.in(payload.room).emit("discardcard", message);
 
+  if (room.discardcard.value == -1 && room.discardcard.type === 'reverse') {
+    room.reverse = true;
+    room.discardcard.value = -2;
+  }
+  
+  // tell all clients who the next player is
   console.log(" next player: ");
   let nextplayer = getNextPlayerByRoom(payload.room);
   console.log(" next player: ");
@@ -181,7 +189,7 @@ const handleCanDiscardCard = (socket, data, callback) => {
   if (card.color === room.discardcard.color 
     || (card.value === room.discardcard.value && card.type === 'number')) {
     callback({
-      status: "ok"
+      status: "yes"
     });
   } else {
     callback({

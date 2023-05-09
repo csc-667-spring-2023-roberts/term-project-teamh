@@ -139,6 +139,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     players: [{ name: request.session.user, hands: [] }],
     currentplayer: 0,
     discardcard: {},
+    reverse: false,
     status: 'Waiting'
   });
   roomchats.push({
