@@ -140,7 +140,8 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     currentplayer: 0,
     discardcard: {},
     reverse: false,
-    status: 'Waiting'
+    status: 'Waiting',
+    discardPile: [],
   });
   roomchats.push({
     name: request.body.roomname,
@@ -188,22 +189,23 @@ router.get("/waitingroom", (request, response) => {
 router.get("/startgame", isAuthenticated, (request, response) => {
   console.log("----startgame----");
 
-  let result = getRoomByName(request.query.room);
-  result.status = 'In Progress'
+  let room = getRoomByName(request.query.room);
+  room.status = 'In Progress'
   let c = getCards().map((x) => x);
   c = shuffle(c);
-  result.deck = c;
+  room.deck = c;
 
-  let x = result.players.length * 7;
-  for (let i = 0; i < result.players.length; i++) {
+  let x = room.players.length * 7;
+  for (let i = 0; i < room.players.length; i++) {
     const hands = c.slice(0, 7);
-    result.players[i].hands = hands;
-    result.deck.splice(0, 7);
+    room.players[i].hands = hands;
+    room.deck.splice(0, 7);
   }
 
-  let firstdiscard = result.deck[0];
-  result.deck.splice(0, 1);
-  result.discardcard = firstdiscard;
+  let firstdiscard = room.deck[0];
+  room.deck.splice(0, 1);
+  room.discardcard = firstdiscard;
+  room.discardPile.push(firstdiscard);
 
   const io = request.app.get("io");
   let message = JSON.stringify({room: request.query.room});

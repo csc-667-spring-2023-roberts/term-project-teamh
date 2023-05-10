@@ -3,6 +3,7 @@ rooms = [
     name: "room1",
     host: "abc",
     deck: [],
+    discardPile: [],
     currentplayer: 0,
     status: 'Waiting',
     discardcard: {},
@@ -11,8 +12,7 @@ rooms = [
       { name: "player1", hands: [] },
       { name: "asdf", hands: [] },
     ],
-  },
-  { name: "room2", host: "xyz", currentplayer: 0, status: 'Waiting', reverse: false, discardcard: {}, deck: [], players: [] },
+  }
 ];
 roomchats = [
   {

@@ -59,6 +59,11 @@
             </div>
           </div>
           <br>
+          <% if(myturn === true){ %>
+            <button type="button" id="drawbutton" onClick="drawCard()">Draw Card</button>
+          <% } else{ %>  
+            <button type="button" id="drawbutton" onClick="drawCard()" disabled>Draw Card</button>
+          <% } %>
           <div id="cardarea">
             <% me.hands.forEach((h) => { %>
               <img src='<%= h.src %>' width="98px" height="136px" disabled="<%= !myturn %>" onClick="discardCard(this, this.src, <%= h.cardId %>)" cardid="<%= h.cardId %>"/>
@@ -66,11 +71,6 @@
             %>
           </div>
         </div>
-        <% if(myturn === true){ %>
-          <button type="button" id="drawbutton" onClick="drawCard()">Draw Card</button>
-        <% } else{ %>  
-          <button type="button" id="drawbutton" onClick="drawCard()" disabled>Draw Card</button>
-        <% } %>
        
       </main>
       <aside class="sidebar">

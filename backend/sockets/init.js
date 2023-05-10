@@ -2,7 +2,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 
 const { getPlayerByRoomAndName, updateRoomChat, getRoomByName, getNextPlayerByRoom } = require("../room");
-const { getCards, getCardsById } = require("../deck");
+const { getCards, getCardsById, shuffle } = require("../deck");
 const initSockets = (app, sessionMiddleware) => {
   const server = http.createServer(app);
   const io = new Server(server);
@@ -90,6 +90,13 @@ const handleDrawCard = (io, socket, data) => {
   }
   console.log(room.deck.length);
 
+  // no more cards, re-fill from discard pile
+  if (room.deck.length == 0) {
+    let c = room.discardPile.map((x) => x);
+    c = shuffle(c);
+    room.deck = c;
+    room.discardPile = [];
+  }
   message = {
     data: room.deck[0],
   };
@@ -150,6 +157,7 @@ const handleDiscardCard = (io, socket, data) => {
   console.log(index);
   let dis = me.hands.splice(index, 1);  // remove it from the hand
   room.discardcard = dis[0];
+  room.discardPile.push(dis[0]);
   console.log(dis);
   console.log(me.hands.length);
 
@@ -208,6 +216,14 @@ const handleShouldEndTurn = (io, socket, data, callback) => {
   if (room.discardcard.value == -1 && 
     (room.discardcard.type === 'pick2' || room.discardcard.type === 'skip')) {
     if (room.discardcard.type === 'pick2') {
+      // draw first card, if no more cards, re-fill from discard pile
+      if (room.deck.length == 0) {
+        let c = room.discardPile.map((x) => x);
+        c = shuffle(c);
+        room.deck = c;
+        room.discardPile = [];
+      }
+
       message = {
         data: room.deck[0],
       };
@@ -218,6 +234,14 @@ const handleShouldEndTurn = (io, socket, data, callback) => {
       message = JSON.stringify(message);
       console.log("message" + message);
       io.in(socket.id).emit("draw", message);
+
+      // draw 2nd card, if no more cards, re-fill from discard pile
+      if (room.deck.length == 0) {
+        let c = room.discardPile.map((x) => x);
+        c = shuffle(c);
+        room.deck = c;
+        room.discardPile = [];
+      }
 
       message = {
         data: room.deck[0],
