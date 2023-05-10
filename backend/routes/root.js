@@ -202,6 +202,14 @@ router.get("/startgame", isAuthenticated, (request, response) => {
     room.deck.splice(0, 7);
   }
 
+  while(true) {
+    console.log('--- re-shuffle')
+    c = shuffle(room.deck);
+    room.deck = c;
+    console.log(room.deck[0].type);
+    if (room.deck[0].type !== 'wild' && room.deck[0].type !== 'wild4')
+      break;
+  }
   let firstdiscard = room.deck[0];
   room.deck.splice(0, 1);
   room.discardcard = firstdiscard;

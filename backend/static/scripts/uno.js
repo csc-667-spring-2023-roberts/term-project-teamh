@@ -166,9 +166,14 @@ function discardCard(img, imgsrc, id) {
 
   console.log('-------');
 
+  let x = sessionStorage.getItem("login");
+  let user = JSON.parse(x);
+  console.log(user);
+  
   socket.emit("candiscardcard", JSON.stringify({
       cardid: id,
       room: room.value,
+      user: user.username,
     }), (response)=>{
     console.log(response);
     if (response.status === 'yes') {
@@ -178,9 +183,6 @@ function discardCard(img, imgsrc, id) {
       let discardCardId = curDiscardCard.getAttribute("cardid");
       console.log("discardCardId:" + discardCardId);
       
-      let x = sessionStorage.getItem("login");
-      let user = JSON.parse(x);
-      console.log(user);
       const message = {
         event: "discard",
         data: {

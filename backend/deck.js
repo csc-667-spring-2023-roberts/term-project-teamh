@@ -184,6 +184,28 @@ const getCards = () => {
   };
   cards.push(card);
 
+  // wild
+  for (let i = 0; i < 4; i++) {
+    let card = {
+      cardId: cardId++,
+      color: "wild",
+      src: "/images/wild_color_changer.png",
+      type: "wild",
+      value: -1,
+    };
+    cards.push(card);
+  }
+  // wild pick4
+  for (let i = 0; i < 4; i++) {
+    let card = {
+      cardId: cardId++,
+      color: "wild4",
+      src: "/images/wild_pick_four.png",
+      type: "wild4",
+      value: -1,
+    };
+    cards.push(card);
+  }
   return cards;
 };
 
@@ -213,7 +235,7 @@ const getCardsById = (id) => {
     return c.cardId === id;
   });
 
-  console.log(result);
+  // console.log(result);
   return result;
 }
 module.exports = { getCards, shuffle, getCardsById };

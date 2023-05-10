@@ -69,10 +69,10 @@ const getNextPlayerByRoom = (room) => {
   });
   let result = {};
   if (roomobj !== undefined) {
-    console.log('--------------');
+    // console.log('--------------');
     //console.log(roomobj);
     let i = roomobj.currentplayer;
-    console.log(i);
+    // console.log(i);
     if (roomobj.reverse === false) {
       if (roomobj.currentplayer === roomobj.players.length-1) {
         i = 0;
@@ -92,8 +92,8 @@ const getNextPlayerByRoom = (room) => {
     //console.log(roomobj.players[i]);
     result = roomobj.players[i];
   }
-  console.log('--------------');
-  console.log(result);
+  // console.log('--------------');
+  // console.log(result);
   return result;
 };
 
