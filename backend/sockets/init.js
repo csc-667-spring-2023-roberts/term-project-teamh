@@ -106,6 +106,9 @@ const handleDrawCard = (io, socket, data) => {
       room.deck[i].color = 'wild4';
       room.deck[i].value = -1;
     }
+    if (room.deck[i].type === 'wild') {
+      room.deck[i].color = 'wild';
+    }
   }
 
   message = {
@@ -165,12 +168,14 @@ const handleDiscardCard = (io, socket, data) => {
       return true;
     }
   });
-  console.log(index);
   let dis = me.hands.splice(index, 1);  // remove it from the hand
   room.discardcard = dis[0];
+  console.log(room.discardPile);
+  let cur = room.discardPile[room.discardPile.length - 1];
+  if (dis[0].type === 'wild'){
+    dis[0].color = cur.color;
+  }
   room.discardPile.push(dis[0]);
-  console.log(dis);
-  console.log(me.hands.length);
 
   // tell all clients a card is discarded
   var message = {
@@ -208,7 +213,8 @@ const handleCanDiscardCard = (socket, data, callback) => {
   let me = getPlayerByRoomAndName(payload.room, payload.user);
 
   if (card.color === room.discardcard.color 
-    || (card.value === room.discardcard.value && card.type === 'number')) {
+    || (card.value === room.discardcard.value && card.type === 'number')
+    || card.type === 'wild') {
     callback({
       status: "yes"
     });
@@ -328,6 +334,9 @@ const pick1Card = (io, socket, room, me) => {
     if (room.deck[i].type === 'wild4') {
       room.deck[i].color = 'wild4';
       room.deck[i].value = -1;
+    }
+    if (room.deck[i].type === 'wild') {
+      room.deck[i].color = 'wild';
     }
   }
   let message = {
