@@ -7,7 +7,7 @@
   background-color: #FFF; 
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   height: 300px;
-  width: 530px;
+  width: 250px;
   margin: 0 auto;
   overflow: auto;
   color: black;
@@ -66,7 +66,7 @@ p {
   /* max-width: 940px; */
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: auto 300px;
   grid-template-rows: 50px auto 50px;
   grid-gap: 7px;
   width: 100vw;

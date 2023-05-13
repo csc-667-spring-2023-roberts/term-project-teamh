@@ -15,8 +15,11 @@ const initSockets = (app, sessionMiddleware) => {
       console.log("user disconnected");
     });
     _socket.on("joinroom", (data) => {
-      handleJoinRoom(io, _socket, data);
-    });    
+      handleJoinRoom(io, _socket, data, false);
+    });
+    _socket.on("joingameroom", (data) => {
+      handleJoinRoom(io, _socket, data, true);
+    });  
     _socket.on("chat", (data) => {
       handleChat(io, _socket, data);
     });
@@ -52,9 +55,10 @@ const handleChat = (io, socket, data) => {
   io.in(payload.room).emit("chat", data);
 }
 
-const handleJoinRoom = (io, socket, data) => {
+const handleJoinRoom = (io, socket, data, gameroom) => {
   let payload = JSON.parse(data);
   console.log(payload);
+  console.log(gameroom);
   console.log("----joinroom");
   socket.join(payload.room);
   let message = {
@@ -63,7 +67,11 @@ const handleJoinRoom = (io, socket, data) => {
   io.in(payload.room).emit("chat", JSON.stringify(message));
   
   let room = getRoomByName(payload.room);
-  io.in(payload.room).emit("waitroom-update", JSON.stringify(room));
+  if (gameroom === false) {
+    io.in(payload.room).emit("waitroom-update", JSON.stringify(room));
+  } else {
+    io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
+  }
 }
 
 const handleDrawCard = (io, socket, data) => {
@@ -151,6 +159,7 @@ const handleDrawCard = (io, socket, data) => {
     message = JSON.stringify(message);
     // console.log("message" + message);
     io.in(payload.room).emit("whosturn", message);
+    io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
   }
 }
 
@@ -201,6 +210,7 @@ const handleDiscardCard = (io, socket, data) => {
   message = JSON.stringify(message);
   // console.log("message" + message);
   io.in(payload.room).emit("whosturn", message);
+  io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
 }
 
 const handleCanDiscardCard = (socket, data, callback) => {
@@ -315,7 +325,7 @@ const handleEndTurn = (io, socket, data) => {
   message = JSON.stringify(message);
   // console.log("message" + message);
   io.in(payload.room).emit("whosturn", message);
-
+  io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
 }
 
 const pick1Card = (io, socket, room, me) => {

@@ -13,13 +13,12 @@
       let user = JSON.parse(x);
 
       const message = {
-        event: "joinroom",
         user: user.username,
         room: room.value,
       };
 
       console.log(message);
-      socket.emit("joinroom", JSON.stringify(message));
+      socket.emit("joingameroom", JSON.stringify(message));
     }
   </script>
 </head>
@@ -78,13 +77,8 @@
         <p>Host: <%= host %></p>
         Players
         <div id="players">
-          <% players.forEach(function(p) { %>
-            <li>
-                <%= p.name %>
-            </li>
-            <% }); 
-          %>
         </div>
+        <hr>
         <h2>Chat </h2>
         <form id="input-form" onsubmit="sendMessage(event);">
           <label for="message">Message:</label>

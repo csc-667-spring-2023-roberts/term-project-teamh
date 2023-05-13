@@ -38,6 +38,22 @@ socket.on("waitroom-update", function (data) {
 
   document.getElementById("players").innerHTML = players;
 });
+socket.on("gameroom-player-update", function (data) {
+  console.log("gameroom-player-update");
+  console.log(data);
+  room = JSON.parse(data);
+
+  let players = "";
+  for (let i = 0; i < room.players.length; i++) {
+    let cur = "";
+    if (room.currentplayer === i) {
+      cur = " <= ";
+    }
+    players += '<li>' + room.players[i].name + " " + cur + "</li>";
+  }
+
+  document.getElementById("players").innerHTML = players;
+});
 socket.on("draw", function (event) {
   console.log("draw");
   console.log(event);
