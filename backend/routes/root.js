@@ -258,6 +258,13 @@ router.get("/game", (request, response) => {
   response.redirect("/");
 });
 
+router.get("/looseScreen", (_request, response) => {
+  response.render("looseScreen", { title: "Uno Game (Loosing Screen)" });
+});
+router.get("/winScreen", (_request, response) => {
+  response.render("winScreen", { title: "Uno Game (Winning Screen)" });
+});
+
 router.post("/:id", (request, response) => {
   const io = request.app.get("io");
 

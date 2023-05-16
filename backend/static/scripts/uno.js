@@ -43,13 +43,22 @@ socket.on("gameroom-player-update", function (data) {
   console.log(data);
   room = JSON.parse(data);
 
+  let x = sessionStorage.getItem("login");
+  console.log(x);
+
+  let user = JSON.parse(x);
+
   let players = "";
   for (let i = 0; i < room.players.length; i++) {
     let cur = "";
     if (room.currentplayer === i) {
       cur = " <= ";
     }
-    players += '<li>' + room.players[i].name + " " + cur + "</li>";
+    if (room.players[i].name === user.username) {
+      players += '<li>' + room.players[i].name + " (You) " + cur + "</li>";
+    } else {
+      players += '<li>' + room.players[i].name + " " + cur + "</li>";
+    }
   }
 
   document.getElementById("players").innerHTML = players;
@@ -132,6 +141,19 @@ socket.on("whosturn", function (event) {
     });
   }
 
+});
+
+socket.on("gameend", function (message) {
+  let payload = JSON.parse(message);
+  console.log("from server: gameend");
+  let x = sessionStorage.getItem("login");
+  console.log(x);
+  let user = JSON.parse(x);
+  if (user.username === payload.winner) {
+    window.location.href = "/winScreen?room=" + payload.room;
+  } else {
+    window.location.href = "/looseScreen?room=" + payload.room;
+  }
 });
 
 function sendMessage(event) {

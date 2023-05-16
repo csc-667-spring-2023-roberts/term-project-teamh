@@ -199,18 +199,29 @@ const handleDiscardCard = (io, socket, data) => {
     room.discardcard.value = -2;
   }
   
-  // tell all clients who the next player is
-  console.log(" next player: ");
-  let nextplayer = getNextPlayerByRoom(payload.room);
-  // console.log(" next player: ");
-  // console.log(nextplayer);
-  message = {
-    player: nextplayer.name,
-  };
-  message = JSON.stringify(message);
-  // console.log("message" + message);
-  io.in(payload.room).emit("whosturn", message);
-  io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
+  // if this player still has cards, continue
+  if (me.hands.length != 0) {
+    // tell all clients who the next player is
+    console.log(" next player: ");
+    let nextplayer = getNextPlayerByRoom(payload.room);
+    // console.log(" next player: ");
+    // console.log(nextplayer);
+    message = {
+      player: nextplayer.name,
+    };
+    message = JSON.stringify(message);
+    console.log("message" + message);
+    io.in(payload.room).emit("whosturn", message);
+    io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
+  } else {
+    console.log(" gameend: ");
+    message = {
+      room: room.name,
+      winner: me.name,
+    };
+    console.log(message);
+    io.in(payload.room).emit("gameend", JSON.stringify(message));
+  }
 }
 
 const handleCanDiscardCard = (socket, data, callback) => {
