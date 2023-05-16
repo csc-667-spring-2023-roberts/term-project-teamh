@@ -11,11 +11,14 @@
           <label for="RoomName"> Room Name: </label>
           <input id="room" type="text" name="room" value="<%= room %>" /> <br />
           <label for="Password"> Password:</label>
-          <input pass="gamePass" type="password" /> <br />
+          <input pass="gamePass" type="password" id="password" name="password"/> <br />
           <input type="submit" value="submit"/>
           <br />
         </form>
       </div>
+      <% if(error !== ""){ %>
+        <div style="color:red"> Error: <%= error %> </div>    
+      <% } %>      
     </main>
 
     <footer class="footer"><%- include('partials/footer')%></footer>

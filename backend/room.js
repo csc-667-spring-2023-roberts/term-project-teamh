@@ -8,6 +8,7 @@ rooms = [
     status: 'Waiting',
     discardcard: {},
     reverse: false,
+    password: "",
     players: [
       { name: "player1", hands: [] },
       { name: "asdf", hands: [] },

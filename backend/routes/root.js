@@ -58,12 +58,11 @@ router.get("/createGame", (_request, response) => {
 
 router.get("/joingame", (request, response) => {
   console.log("----joingame----");
-
-  let result = getRoomByName(request.query.room);
-
-  const query = querystring.stringify(request.query);
-
-  response.render("joinGame", { title: "Join Game", room: request.query.room });
+  let error = request.query.error;
+  if (error === null) {
+    error = ""
+  }
+  response.render("joinGame", { title: "Join Game", room: request.query.room, error: error });
 });
 
 router.post("/joingame", (request, response) => {
@@ -71,13 +70,21 @@ router.post("/joingame", (request, response) => {
   console.log(request.body);
   let room = getRoomByName(request.body.room);
   console.log(room);
-  room.players.push({
-    name: request.session.user,
-    hands: [],
-  });
-  const query = querystring.stringify({ room: request.body.room });
-  console.log(query);
-  response.redirect("/waitingroom?" + query);
+  if (room != null) {
+    if (room.password !== request.body.password) {
+      response.redirect("/joingame?room=" + request.body.room + "&error=password");
+    } else {
+      room.players.push({
+        name: request.session.user,
+        hands: [],
+      });
+      const query = querystring.stringify({ room: request.body.room });
+      console.log(query);
+      response.redirect("/waitingroom?" + query);
+    }
+  } else {
+    response.redirect("/joingame?room=" + request.body.room + "&error=room");
+  }
 });
 
 router.get("/", function (_request, response) {
@@ -135,6 +142,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
   console.log("--- newgame ----");
   rooms.push({
     name: request.body.roomname,
+    password: request.body.password,
     host: request.session.user,
     players: [{ name: request.session.user, hands: [] }],
     currentplayer: 0,
