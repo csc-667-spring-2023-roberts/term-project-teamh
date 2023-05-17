@@ -81,9 +81,14 @@ p {
   grid-column-end: -1;
   padding: 10px;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
+}
+
+.headers .header {
+  text-align: center;
+  flex-grow: 1;
 }
 
 .headers h1 {
@@ -160,26 +165,64 @@ p {
 }
 
 /* logged in page styles */
-.loggedin-container {
+.main {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 20px 0;
 }
 
-.left-sidebar {
-  flex: 3;
-  padding: 1rem;
-  border: 1px solid #ccc;
+.main div {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
 }
-.loggedin-content {
-  flex: 7;
-  padding: 1rem;
-  border: 1px solid #ccc;
+
+.main p {
+  font-size: 1.5em;
+  margin-bottom: 10px;
 }
-.chat-wrapper {
-  padding: 1rem;
-  border: 1px solid #ccc;
+
+.main input[type="submit"] {
+  border: none;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
 }
+
+.game-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.game-card {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.game-card h3 {
+  margin-bottom: 10px;
+}
+
+.game-card a {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.game-card a:hover {
+  background-color: #0056b3;
+}
+
 
 /* signUp page */
 body.signup-body {
@@ -214,11 +257,6 @@ h1 {
 .nav li a {
   color: white;
   text-decoration: none;
-}
-
-.nav li a:hover {
-  color: #007bff;
-  text-decoration: underline;
 }
 
 .signup-form {

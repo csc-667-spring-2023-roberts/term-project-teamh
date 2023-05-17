@@ -2,7 +2,6 @@
 <html>
   <head>
     <%- include('partials/head') %>
-
   </head>
 
   <body>
@@ -16,16 +15,23 @@
       <main class="main">
         <div>
           <p>Start a new game</p>
-            <input type="submit" value="Create" onClick="window.location.href = '/createGame'"/>
+          <input
+            type="submit"
+            value="Create"
+            onClick="window.location.href = '/createGame'"
+          />
         </div>
-        <br />
 
         <div>
-          Join other games: <% openrooms.forEach(function(room) { %>
-          <li>
-            <%= room.name %> <a href="/joingame?room=<%= room.name %>">join</a>
-          </li>
-          <% }); %>
+          Join other games:
+          <div class="game-list">
+            <% openrooms.forEach(function(room) { %>
+            <div class="game-card">
+              <h3><%= room.name %></h3>
+              <a href="/joingame?room=<%= room.name %>">Join Game</a>
+            </div>
+            <% }); %>
+          </div>
         </div>
       </main>
       <aside class="sidebar"></aside>
