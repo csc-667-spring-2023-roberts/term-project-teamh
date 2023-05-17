@@ -41,7 +41,7 @@ router.get("/", isAuthenticated, (request, response) => {
     title: "Welcome to Uno!",
     user: request.session.user,
     openrooms: rooms,
-    login: true
+    login: true,
   });
 });
 router.get("/login", (_request, response) => {
@@ -60,9 +60,13 @@ router.get("/joingame", (request, response) => {
   console.log("----joingame----");
   let error = request.query.error;
   if (error === null) {
-    error = ""
+    error = "";
   }
-  response.render("joinGame", { title: "Join Game", room: request.query.room, error: error });
+  response.render("joinGame", {
+    title: "Join Game",
+    room: request.query.room,
+    error: error,
+  });
 });
 
 router.post("/joingame", (request, response) => {
@@ -72,7 +76,9 @@ router.post("/joingame", (request, response) => {
   console.log(room);
   if (room != null) {
     if (room.password !== request.body.password) {
-      response.redirect("/joingame?room=" + request.body.room + "&error=password");
+      response.redirect(
+        "/joingame?room=" + request.body.room + "&error=password"
+      );
     } else {
       room.players.push({
         name: request.session.user,
@@ -148,7 +154,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     currentplayer: 0,
     discardcard: {},
     reverse: false,
-    status: 'Waiting',
+    status: "Waiting",
     discardPile: [],
   });
   roomchats.push({
@@ -186,7 +192,7 @@ router.get("/waitingroom", isAuthenticated, (request, response) => {
       host: room.host,
       players: room.players,
       chats: chats,
-      ishost: (room.host===me.name),
+      ishost: room.host === me.name,
     });
   }
 });
@@ -198,7 +204,7 @@ router.get("/startgame", isAuthenticated, (request, response) => {
   console.log("----startgame----");
 
   let room = getRoomByName(request.query.room);
-  room.status = 'In Progress'
+  room.status = "In Progress";
   let c = getCards().map((x) => x);
   c = shuffle(c);
   room.deck = c;
@@ -210,13 +216,12 @@ router.get("/startgame", isAuthenticated, (request, response) => {
     room.deck.splice(0, 7);
   }
 
-  while(true) {
-    console.log('--- re-shuffle')
+  while (true) {
+    console.log("--- re-shuffle");
     c = shuffle(room.deck);
     room.deck = c;
     console.log(room.deck[0].type);
-    if (room.deck[0].type !== 'wild' && room.deck[0].type !== 'wild4')
-      break;
+    if (room.deck[0].type !== "wild" && room.deck[0].type !== "wild4") break;
   }
   let firstdiscard = room.deck[0];
   room.deck.splice(0, 1);
@@ -224,7 +229,7 @@ router.get("/startgame", isAuthenticated, (request, response) => {
   room.discardPile.push(firstdiscard);
 
   const io = request.app.get("io");
-  let message = JSON.stringify({room: request.query.room});
+  let message = JSON.stringify({ room: request.query.room });
   io.in(request.query.room).emit("startgame", message);
 
   const query = querystring.stringify(request.query);
@@ -244,13 +249,13 @@ router.get("/game", isAuthenticated, (request, response) => {
   let chats = [];
 
   let curplayer = getCurrentPlayerByRoom(request.query.room);
-  
+
   if (roomchat !== undefined) {
     chats = roomchat.chats;
   }
-  console.log((curplayer.name))
-  console.log((player.name))
-  console.log((curplayer.name === player.name))
+  console.log(curplayer.name);
+  console.log(player.name);
+  console.log(curplayer.name === player.name);
   response.render("game", {
     roomname: result.name,
     host: result.host,
@@ -259,7 +264,7 @@ router.get("/game", isAuthenticated, (request, response) => {
     chats: chats,
     firstdiscard: result.discardcard,
     cardsleft: result.deck.length,
-    myturn: (curplayer.name === player.name)
+    myturn: curplayer.name === player.name,
   });
 });
 router.get("/game", (request, response) => {

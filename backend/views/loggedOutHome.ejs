@@ -6,7 +6,6 @@
 
   <body>
     <div class="container_no_chat">
-      
       <main>
         <div class="centered-content">
           <h1 class="uno-title">UNO</h1>
@@ -18,11 +17,13 @@
         </div>
         <div class="content-wrapper">
           <div class="stats-block">stats block</div>
-          <div class="current-games">current games
+          <div class="current-games">
+            current games
             <div>
               <% openrooms.forEach(function(room) { %>
               <li>
-                <%= room.name %> - <%= room.players.length %> players - Status: <%= room.status %>
+                <%= room.name %> - <%= room.players.length %> players - Status:
+                <%= room.status %>
               </li>
               <% }); %>
             </div>

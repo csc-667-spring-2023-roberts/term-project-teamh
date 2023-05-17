@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/home.css" />
+  </head>
 
-<head>
-  <title>
-    <%= title %>
-  </title>
-  <link rel="stylesheet" href="/stylesheets/home.css" />
+  <body class="signup-body">
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+    </ul>
 
-</head>
+    <div class="signUp-container">Sorry you lost.</div>
 
-<body class="signup-body">
-  <ul class="nav">
-    <li><a href="/">Home</a></li>
-  </ul>
-
-  <div class="signUp-container">
-    Sorry you lost.
-  </div>
-
-  <footer class="footer"><%- include('partials/footer') %></footer>
-</body>
-
+    <footer class="footer"><%- include('partials/footer') %></footer>
+  </body>
 </html>
