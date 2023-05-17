@@ -304,6 +304,120 @@ label em {
   transition: background-color 0.3s;
 }
 
+/* waiting room page */
+.main h1 {
+  margin-bottom: 10px;
+}
+
+.main p {
+  margin-bottom: 10px;
+}
+
+.main a {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.main a:hover {
+  background-color: #0056b3;
+}
+
+.sidebar {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.sidebar h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.sidebar form {
+  background-color: #f8f8f8;
+  padding: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.sidebar form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.sidebar form input[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  margin-bottom: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar form input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.chattext {
+  margin-bottom: 10px;
+}
+
+/* join game page */
+.form-box {
+  width: 50%;
+  padding: 30px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.15);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 5px;
+}
+
+form input[type="text"], 
+form input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form input[type="submit"] {
+  width: 50%;
+  margin: auto;
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  text-align: center;
+  color: red;
+  margin-top: 20px;
+}
 
 /* Responsive styles */
 @media (max-width: 800px) {

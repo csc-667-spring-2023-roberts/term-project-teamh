@@ -33,20 +33,21 @@
         <p>Waiting room</p>
         <p>Host: <%= host %></p>
         <div>
-          <div>
-            Players
-          </div> 
+          <div>Players</div>
           <div id="players">
             <% players.forEach(function(p) { %>
-              <li><%= p.name %></li>
-              <% }); %>
+            <li><%= p.name %></li>
+            <% }); %>
           </div>
         </div>
         <% if(ishost === true){ %>
-          <a id="startgame" href="\startgame?room=<%= roomname %>"> Start game</a>
-        <% } else{ %>  
-          Waiting for host to start the game
-        <% } %>
+        <div>
+          <a id="startgame" href="\startgame?room=<%= roomname %>">
+            Start game</a
+          >
+        </div>
+
+        <% } else{ %> Waiting for host to start the game <% } %>
       </main>
       <aside class="sidebar">
         <h2>Chat</h2>
@@ -54,7 +55,6 @@
           <label for="message">Message:</label>
           <input id="message" type="text" name="message" />
           <input id="room" type="hidden" name="room" value="<%= roomname %>" />
-          <br />
           <input type="submit" value="Send" />
           <div id="chatbox">
             <% chats.forEach(function(p) { %>

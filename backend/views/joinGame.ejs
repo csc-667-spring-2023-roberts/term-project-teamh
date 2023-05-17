@@ -6,23 +6,23 @@
   </head>
   <body>
     <main>
-      <div>
-        <form id="join-game" action=" /joinGame" method="post">
-          <label for="RoomName"> Room Name: </label>
-          <input id="room" type="text" name="room" value="<%= room %>" /> <br />
-          <label for="Password"> Password:</label>
-          <input pass="gamePass" type="password" id="password" name="password"/> <br />
-          <input type="submit" value="submit"/>
-          <br />
+      <div class="form-box">
+        <form id="join-game" action="/joinGame" method="post">
+          <label for="RoomName">Room Name:</label>
+          <input id="room" type="text" name="room" value="<%= room %>" />
+          <label for="Password">Password:</label>
+          <input pass="gamePass" type="password" id="password" name="password"/>
+          <input type="submit" value="Submit"/>
         </form>
       </div>
       <% if(error !== ""){ %>
-        <div style="color:red"> Error: <%= error %> </div>    
+        <div class="error-message">Error: <%= error %></div>    
       <% } %>      
     </main>
 
     <footer class="footer"><%- include('partials/footer')%></footer>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/scripts/uno.js"></script>
-  </body>
+  </body> 
+
 </html>
