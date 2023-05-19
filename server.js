@@ -40,6 +40,8 @@ app.use(sessionMiddleware);
 app.use("/test", testRoutes);
 const rootRoutes = require("./backend/routes/root");
 app.use("/", rootRoutes);
+const authRoutes = require("./backend/routes/authentication");
+app.use("/auth", authRoutes);
 
 const server = initSockets(app, sessionMiddleware);
 server.listen(PORT, () => {

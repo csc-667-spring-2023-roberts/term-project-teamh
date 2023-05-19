@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const Users = require("../../db/users.js");
+const Users = require("../db/users");
 
 const router = express.Router();
 
@@ -17,17 +17,13 @@ router.post("/signup", async (request, response) => {
   const hash = await bcrypt.hash(password, salt);
 
   try {
-    const { id } = await Users.create(username, email, hash);
-    request.session.user = {
-      id,
-      username,
-      email,
-    };
+    await Users.create(username, email, hash);
+    request.session.user = username;
 
     response.redirect("/");
   } catch (error) {
     console.log({ error });
-    response.render("register", {
+    response.render("signup", {
       title: "Jrob's Term Project",
       username,
       email,

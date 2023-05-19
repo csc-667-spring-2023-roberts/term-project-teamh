@@ -16,7 +16,7 @@
         <li><a href="/rules#rules">Rules</a></li>
       </ul>
 
-      <form class="signup-form" method="post" action="/login">
+      <form class="signup-form" method="post" action="/auth/signup">
         <label>
           <em>Username</em>
           <input class="input-field" name="username" autocomplete="username" />
@@ -52,7 +52,7 @@
           <input type="checkbox" name="terms" required />
           I agree to the <a href="/terms">terms of service</a>.
         </label>
-        <input class="submit-btn" type="submit" value="Login" />
+        <input class="submit-btn" type="submit" value="SignUp" />
       </form>
       <footer class="footer"><%- include('partials/footer') %></footer>
     </div>
