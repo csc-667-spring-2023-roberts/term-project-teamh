@@ -3,20 +3,21 @@
   <head>
     <%- include('partials/head') %>
 
-    <title><%= title %></title>
     <script src="/scripts/bundle.js"></script>
     <link rel="stylesheet" href="/stylesheets/home.css" />
   </head>
   <body class="signup-body">
+    <div class="centered-content">
+    <ul class="nav-signup">
+      <h1 class="uno-title">
+        <a href="/" onclick="window.location.href = this.href; return false;">UNO</a>
+      </h1>
+    </ul>
+   </div>
     <div class="signUp-container">
-      <h1>Sign up page</h1>
-
-      <ul class="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/rules#rules">Rules</a></li>
-      </ul>
-
+      
       <form class="signup-form" method="post" action="/login">
+        <h2>Sign up </h2>
         <label>
           <em>Username</em>
           <input class="input-field" name="username" autocomplete="username" />

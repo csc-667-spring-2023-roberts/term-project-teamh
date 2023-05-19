@@ -89,16 +89,21 @@ p {
 .headers .header {
   text-align: center;
   flex-grow: 1;
+  text-decoration: none;
+
 }
 
 .headers h1 {
   margin: 0;
   font-size: 2em;
+  margin: 0 1rem;
+  margin-right: 75%;
 }
 
 .headers a {
   color: white;
-  text-decoration: underline;
+  text-decoration: none;
+
 }
 
 
@@ -124,25 +129,85 @@ p {
 
 /* loggedout page styles */
 .centered-content {
-  display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
+  justify-content: space-between;
 
+}
+.centered-content h1{
+  justify-content: flex-start;
+}
 .uno-title {
   margin-bottom: 1rem;
+  
+  
+}
+.uno-title a {
+  text-decoration: none;
+  color: white;
 }
 
 .nav-list {
-  list-style-type: none;
-  padding: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  align-items: center;
+  list-style: none;
+  padding: 0;
 }
 
 .nav-list li {
+  margin-left: 10px;
+}
+.nav-list h1 {
   margin: 0 1rem;
+  margin-right: 75%;
+}
+.rules-list {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+
+.rules-list li {
+  padding-bottom: 10px; /* Add desired padding between each <li> element */
+}
+
+.rules-list li a {
+  padding: 5px;
+  text-decoration: none;
+  color: white;
+  margin-left: 5px;
+  text-align: center;
+}
+
+.rules-list h1 {
+  margin: 0 1rem;
+  margin-right: 75%;
+  padding-right: 10px;
+}
+
+
+.nav-signup {
+  display: flex;
+  justify-content: space-between; /* Aligns items to the ends */
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-signup h1 {
+  margin: 0 1rem;
+  margin-right: auto;
+  padding: 0 10px; /* Add padding to the left and right */
+}
+
+.nav-signup li {
+  margin-left: auto;
+  margin-right: 5px;
+  padding: 0 10px; /* Add padding to the left and right */
 }
 
 .content-wrapper {
@@ -226,7 +291,8 @@ p {
 
 /* signUp page */
 body.signup-body {
-  background-color: royalblue;
+  background: royalblue;
+  background-size: cover;
   margin: 0;
   padding: 0;
 }
@@ -262,7 +328,14 @@ h1 {
 .signup-form {
   display: grid;
   grid-gap: 15px;
-  padding: 120px;
+  padding: 40px;
+  border-radius: 10px; 
+  border: 3px solid whitesmoke; 
+  justify-content: center;
+}
+
+.signup-form h2 {
+  text-align: center;
 }
 
 .input-field {
@@ -271,6 +344,7 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 14px;
+  justify-content: center;
 }
 
 label em {
@@ -444,10 +518,11 @@ form input[type="submit"]:hover {
   color: white;
   text-decoration: none;
   font-size: 16px;
-  width: 25%;
+  width: 50%;
   text-align: center;
   border: none;
   border-radius: 5px;
+
 
 }
 .signup-btn:hover {
@@ -461,6 +536,7 @@ form input[type="submit"]:hover {
 #rules,
 #special-cards {
   display: none;
+  color: black;
 }
 
 #rules:target,
@@ -468,18 +544,26 @@ form input[type="submit"]:hover {
   display: block;
 }
 
-#rules:target {
+#rules:target,
+#special-cards:target {
   display: block;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 10px;
+  padding: 20px;
+  border: 2px solid #ccc;
+  margin: 20px 0;
 }
 
 .nav-list li a {
   display: inline-block;
   padding: 10px;
-  background-color: royalblue;
   margin-right: 10px;
   color: white; 
+  text-decoration: none;
+
 }
 
 .nav li a:hover {
   background-color: #007bff;
 }
+

@@ -5,13 +5,18 @@
     <link rel="stylesheet" href="/stylesheets/home.css" />
   </head>
   <body class="signup-body">
-    <div class="signUp-container">
-      <h1>Login</h1>
-      <ul class="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/rules#rules">Rules</a></li>
+    <div class="centered-content">
+      <ul class="nav-signup">
+        <h1 class="uno-title">
+          <a href="/" onclick="window.location.href = this.href; return false;">UNO</a>
+        </h1>
+        
       </ul>
+     </div>
+    <div class="signUp-container">
+          
       <form id="login-form" class="signup-form" action="/login" method="post">
+        <h2>Login</h2>
         <label for="user">
           <em>Username:</em>
           <input id="user" class="input-field" type="text" name="user" />
