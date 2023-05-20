@@ -141,7 +141,8 @@ const handleDrawCard = (io, socket, data) => {
   index = me.hands.findIndex((c) =>
   {
     if (c.color === room.discardcard.color 
-      || (c.type === 'number' && c.value === room.discardcard.value)) {
+      || (c.type === 'number' && c.value === room.discardcard.value)
+      || c.type === 'reverse' && room.discardcard.type == 'reverse' ) {
       return true;
     }
   });
@@ -194,9 +195,8 @@ const handleDiscardCard = (io, socket, data) => {
   message = JSON.stringify(message);
   io.in(payload.room).emit("discardcard", message);
 
-  if (room.discardcard.value == -1 && room.discardcard.type === 'reverse') {
+  if (room.discardcard.type === 'reverse') {
     room.reverse = true;
-    room.discardcard.value = -2;
   }
   
   // if this player still has cards, continue
@@ -235,7 +235,8 @@ const handleCanDiscardCard = (socket, data, callback) => {
 
   if (card.color === room.discardcard.color 
     || (card.value === room.discardcard.value && card.type === 'number')
-    || card.type === 'wild') {
+    || card.type === 'wild'
+    || (card.type == 'reverse' && room.discardcard.type == 'reverse')) {
     callback({
       status: "yes"
     });
@@ -336,6 +337,7 @@ const handleEndTurn = (io, socket, data) => {
   message = JSON.stringify(message);
   // console.log("message" + message);
   io.in(payload.room).emit("whosturn", message);
+  let room = getRoomByName(payload.room);
   io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
 }
 
