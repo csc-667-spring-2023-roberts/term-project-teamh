@@ -1,5 +1,10 @@
 <div class="headers">
-  <h1 class="header">UNO</h1>
+  <h1 class="header">
+    <a href="/" onclick="window.location.href = this.href; return false;">UNO</a>
+  </h1>
+  <ul class="nav-list">
+    <li><a href="/rules#rules">Rules</a></li>
+  </ul>
   <% if(locals.login){ %>
   <a href="/logout">logout </a>
   <% } else{ %> <% } %>

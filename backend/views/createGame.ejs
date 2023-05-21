@@ -12,7 +12,6 @@
       var room = document.getElementById("roomname");
 
       let x = sessionStorage.getItem("login");
-      //console.log(x);
 
       let user = JSON.parse(x);
 
@@ -22,17 +21,15 @@
         room: room.value,
       };
 
-      //alert(e);
       socket.emit("joinroom", JSON.stringify(message));
-      //e.preventDefault();
     }
   </script>  
 </head>
 
 <body class="signup-body">
-  <ul class="nav">
-    <li><a href="/">Home</a></li>
-  </ul>
+  <h1 class="uno-title">
+    <a href="/" onclick="window.location.href = this.href; return false;">UNO</a>
+  </h1>
 
   <div class="signUp-container">
     <form id="create-game" action="newgame" method="post" class="signup-form" onsubmit="startNewGame(event)">
@@ -46,7 +43,8 @@
       </label>         
       <label> 
         <em>Number of Players:</em> 
-        <input class="input-field" players="number" type="text" name="players" value="4"/> 
+        <input class="input-field" players="number" type="text" name="players" value="4" id="numberPlayer"
+          name="numberPlayer" />
       </label> 
       <input class="submit-btn" type="submit" />
     </form>

@@ -1,31 +1,35 @@
-rooms = [
-  {
-    name: "room1",
-    host: "abc",
-    deck: [],
-    discardPile: [],
-    currentplayer: 0,
-    status: 'Waiting',
-    discardcard: {},
-    reverse: false,
-    password: "",
-    players: [
-      { name: "player1", hands: [] },
-      { name: "asdf", hands: [] },
-    ],
-  }
-];
-roomchats = [
-  {
-    name: "room1",
-    chats: [
-      {
-        player: "player1",
-        message: "hello",
-      },
-    ],
-  },
-];
+rooms = [];
+roomchats = [];
+
+// rooms = [
+//   {
+//     name: "room1",
+//     host: "abc",
+//     deck: [],
+//     discardPile: [],
+//     currentplayer: 0,
+//     status: 'Waiting',
+//     discardcard: {},
+//     reverse: false,
+//     password: "",
+//     numberOfPlayers: 0,
+//     players: [
+//       { name: "player1", hands: [] },
+//       { name: "asdf", hands: [] },
+//     ],
+//   }
+// ];
+// roomchats = [
+//   {
+//     name: "room1",
+//     chats: [
+//       {
+//         player: "player1",
+//         message: "hello",
+//       },
+//     ],
+//   },
+// ];
 
 const getRoomByName = (name) => {
   let result = rooms.find((r) => {
