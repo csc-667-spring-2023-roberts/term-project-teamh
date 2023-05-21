@@ -16,7 +16,6 @@
       let user = JSON.parse(x);
 
       const message = {
-        event: "joinroom",
         user: user.username,
         room: room.value,
       };
@@ -27,9 +26,9 @@
 </head>
 
 <body class="signup-body">
-  <h1 class="uno-title">
-    <a href="/" onclick="window.location.href = this.href; return false;">UNO</a>
-  </h1>
+  <ul class="nav">
+    <li><a href="/">Home</a></li>
+  </ul>
 
   <div class="signUp-container">
     <form id="create-game" action="newgame" method="post" class="signup-form" onsubmit="startNewGame(event)">

@@ -77,6 +77,7 @@ socket.on("draw", function (event) {
 socket.on("discardcard", function (event) {
   console.log("from server: discardcard");
   message = JSON.parse(event);
+  console.log(message);
   const imgElement = document.createElement("img");
   imgElement.src = message.cardimg;
   imgElement.style.width = "98px";
@@ -86,6 +87,11 @@ socket.on("discardcard", function (event) {
   let old = document.getElementById("discardimg");
   document.getElementById("discardpile").removeChild(old);
   document.getElementById("discardpile").append(imgElement);
+  if (message.card.type === "wild" || message.card.type === "wild4") {
+    document.getElementById("color").innerText = message.card.color;
+  } else {
+    document.getElementById("color").innerText = "";
+  }
 });
 
 socket.on("whosturn", function (event) {
@@ -144,7 +150,6 @@ function sendMessage(event) {
   let user = JSON.parse(x);
 
   const message = {
-    event: "chat",
     data: inputMessage.value,
     user: user.username,
     room: room.value,
@@ -163,7 +168,6 @@ function drawCard() {
   let user = JSON.parse(x);
 
   const message = {
-    event: "draw",
     data: "",
     user: user.username,
     room: room.value,
@@ -186,11 +190,7 @@ function discardCard(img, imgsrc, id) {
       user: user.username,
     }), (response)=>{
     if (response.status === 'yes') {
-      let curDiscardCard = document.getElementById("discardimg");
-      let discardCardId = curDiscardCard.getAttribute("cardid");
-      
       const message = {
-        event: "discard",
         data: {
           imgsrc: imgsrc,
           id: id,

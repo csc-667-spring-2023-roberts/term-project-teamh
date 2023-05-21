@@ -164,7 +164,7 @@ const handleDiscardCard = (io, socket, data) => {
   let dis = me.hands.splice(index, 1);  // remove it from the hand
   room.discardcard = dis[0];
   let cur = room.discardPile[room.discardPile.length - 1];
-  if (dis[0].type === 'wild'){
+  if (dis[0].type === 'wild' || dis[0].type === 'wild4') {
     dis[0].color = cur.color;
   }
   room.discardPile.push(dis[0]);
@@ -173,6 +173,7 @@ const handleDiscardCard = (io, socket, data) => {
   var message = {
     cardimg: payload.data.imgsrc,
     cardid: payload.data.id,
+    card: room.discardcard,
   };
   message = JSON.stringify(message);
   io.in(payload.room).emit("discardcard", message);
