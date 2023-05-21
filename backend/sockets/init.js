@@ -14,19 +14,24 @@ const initSockets = (app, sessionMiddleware) => {
     _socket.on("disconnect", () => {
       console.log("user disconnected");
     });
-    _socket.on("joinroom", (data) => {
+    _socket.on("joinroom", (rawData) => {
+      let data = JSON.parse(rawData);
       handleJoinRoom(io, _socket, data, false);
     });
-    _socket.on("joingameroom", (data) => {
+    _socket.on("joingameroom", (rawData) => {
+      let data = JSON.parse(rawData);
       handleJoinRoom(io, _socket, data, true);
     });  
-    _socket.on("chat", (data) => {
+    _socket.on("chat", (rawData) => {
+      let data = JSON.parse(rawData);
       handleChat(io, _socket, data);
     });
-    _socket.on("draw", (data) => {
+    _socket.on("draw", (rawData) => {
+      let data = JSON.parse(rawData);
       handleDrawCard(io, _socket, data);
     });
-    _socket.on("candiscardcard", (data, callback) => {
+    _socket.on("candiscardcard", (rawData, callback) => {
+      let data = JSON.parse(rawData);
       handleCanDiscardCard(_socket, data, callback)
     });
     _socket.on("discardcard", (data) => {
@@ -47,35 +52,31 @@ const initSockets = (app, sessionMiddleware) => {
 
 const handleChat = (io, socket, data) => {
   console.log("Chat");
-  let payload = JSON.parse(data);
-  updateRoomChat(payload.room, payload.user, payload.data);
-  socket.join(payload.room);
-  io.in(payload.room).emit("chat", data);
+  updateRoomChat(data.room, data.user, data.data);
+  socket.join(data.room);
+  io.in(data.room).emit("chat", JSON.stringify(data));
 }
 
 const handleJoinRoom = (io, socket, data, gameroom) => {
-  console.log("----joinroom");
-  let payload = JSON.parse(data);
-  socket.join(payload.room);
+  console.log("joinroom");
+  socket.join(data.room);
   let message = {
-    data: 'Joined', user: payload.user, room: payload.room
+    data: 'Joined', user: data.user, room: data.room
   }
-  io.in(payload.room).emit("chat", JSON.stringify(message));
+  io.in(data.room).emit("chat", JSON.stringify(message));
   
-  let room = getRoomByName(payload.room);
+  let room = getRoomByName(data.room);
   if (gameroom === false) {
-    io.in(payload.room).emit("waitroom-update", JSON.stringify(room));
+    io.in(data.room).emit("waitroom-update", JSON.stringify(room));
   } else {
-    io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
+    io.in(data.room).emit("gameroom-player-update", JSON.stringify(room));
   }
 }
 
 const handleDrawCard = (io, socket, data) => {
-  console.log("draw");
-  let payload = JSON.parse(data);
-
-  let room = getRoomByName(payload.room);
-  let me = getPlayerByRoomAndName(payload.room, payload.user);
+  console.log("draw card");
+  let room = getRoomByName(data.room);
+  let me = getPlayerByRoomAndName(data.room, data.user);
   
   // can I draw
   let index = me.hands.findIndex((c) => {
@@ -126,7 +127,7 @@ const handleDrawCard = (io, socket, data) => {
     cardsleft: room.deck.length,
   };
   message = JSON.stringify(message);
-  io.in(payload.room).emit("update-cards-left", message);
+  io.in(data.room).emit("update-cards-left", message);
 
   // after a card is drawn, can I discard this card?
   index = me.hands.findIndex((c) =>
@@ -140,13 +141,13 @@ const handleDrawCard = (io, socket, data) => {
   
   // there is no card to discard, tell everyone there is a next turn
   if (index == -1) {
-    let nextplayer = getNextPlayerByRoom(payload.room);
+    let nextplayer = getNextPlayerByRoom(data.room);
     message = {
       player: nextplayer.name,
     };
     message = JSON.stringify(message);
-    io.in(payload.room).emit("whosturn", message);
-    io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
+    io.in(data.room).emit("whosturn", message);
+    io.in(data.room).emit("gameroom-player-update", JSON.stringify(room));
   }
 }
 
@@ -193,6 +194,8 @@ const handleDiscardCard = (io, socket, data) => {
     io.in(payload.room).emit("whosturn", message);
     io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
   } else {
+    // update DB
+    // remove room
     removeRoomByName(payload.room);
     message = {
       room: room.name,
@@ -204,10 +207,9 @@ const handleDiscardCard = (io, socket, data) => {
 
 const handleCanDiscardCard = (socket, data, callback) => {
   console.log("---handleCanDiscardCard---")
-  let payload = JSON.parse(data);
-  let room = getRoomByName(payload.room);
-  let card = getCardsById(payload.cardid);
-  let me = getPlayerByRoomAndName(payload.room, payload.user);
+  let room = getRoomByName(data.room);
+  let card = getCardsById(data.cardid);
+  let me = getPlayerByRoomAndName(data.room, data.user);
 
   if (card.color === room.discardcard.color 
     || (card.value === room.discardcard.value && card.type === 'number')

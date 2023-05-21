@@ -18,8 +18,9 @@
     "ws": "^8.13.0"
   },
   "scripts": {
-    "start": "node ./server.js",
-    "start:dev": "concurrently \"npm:server:dev\" \"npm:build:dev\"",
+    "start": "concurrently \"npm:server\" \"cp frontend/prod/socket-connection.js backend/static/scripts/socket-connection.js\"",
+    "start:dev": "concurrently \"npm:server:dev\" \"npm:build:dev\" \"cp frontend/dev/socket-connection.js backend/static/scripts/socket-connection.js\"",
+    "server": "PORT=10000 node ./server.js",
     "server:dev": "NODE_ENV=development nodemon -e js,ejs --watch backend ./server.js",
     "build": "webpack",
     "build:dev": "webpack --watch",

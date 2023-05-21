@@ -4,6 +4,7 @@
 <head>
   <%- include('partials/head'); %>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/scripts/socket-connection.js"></script>
   <script src="/scripts/uno.js"></script>
   <script>
     function onload(e) {
@@ -16,8 +17,6 @@
         user: user.username,
         room: room.value,
       };
-
-      console.log(message);
       socket.emit("joingameroom", JSON.stringify(message));
     }
   </script>
@@ -68,7 +67,8 @@
           <% } %>
           <div id="cardarea">
             <% me.hands.forEach((h) => { %>
-              <img src='<%= h.src %>' width="98px" height="136px" disabled="<%= !myturn %>" onClick="discardCard(this, this.src, <%= h.cardId %>)" cardid="<%= h.cardId %>"/>
+              <img src='<%= h.src %>' width="98px" height="136px" style="cursor: pointer;"
+                disabled="<%= !myturn %>" onClick="discardCard(this, this.src, <%= h.cardId %>)" cardid="<%= h.cardId %>"/>
               <% }); 
             %>
           </div>
