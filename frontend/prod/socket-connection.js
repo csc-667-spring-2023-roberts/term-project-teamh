@@ -1,1 +1,1 @@
-var socket = io.connect("https://teamh-web.onrender.com/:10000/");
+var socket = io.connect("https://teamh-web.onrender.com:10000/");
