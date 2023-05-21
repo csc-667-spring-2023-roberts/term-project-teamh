@@ -36,7 +36,6 @@ router.use((request, response, next) => {
 });
 
 router.get("/", isAuthenticated, (request, response) => {
-  console.log(rooms);
   response.render("home", {
     title: "Welcome to Uno!",
     user: request.session.user,
@@ -59,7 +58,7 @@ router.get("/createGame", (_request, response) => {
 router.get("/joingame", (request, response) => {
   console.log("----joingame----");
   let error = request.query.error;
-  if (error === null) {
+  if (error === undefined) {
     error = "";
   }
   response.render("joinGame", {
@@ -71,9 +70,7 @@ router.get("/joingame", (request, response) => {
 
 router.post("/joingame", (request, response) => {
   console.log("----POST joingame----");
-  console.log(request.body);
   let room = getRoomByName(request.body.room);
-  console.log(room);
   if (room != null) {
     if (room.password !== request.body.password) {
       response.redirect(
@@ -94,7 +91,6 @@ router.post("/joingame", (request, response) => {
 });
 
 router.get("/", function (_request, response) {
-  console.log(rooms);
   response.render("loggedOutHome", {
     openrooms: rooms,
   });
@@ -149,6 +145,7 @@ router.post("/newgame", isAuthenticated, (request, response) => {
   rooms.push({
     name: request.body.roomname,
     password: request.body.password,
+    numberOfPlayers: request.body.numberPlayer,
     host: request.session.user,
     players: [{ name: request.session.user, hands: [] }],
     currentplayer: 0,
@@ -161,7 +158,6 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     name: request.body.roomname,
     chats: [],
   });
-  console.log(rooms);
 
   const query = querystring.stringify({ room: request.body.roomname });
 
@@ -174,9 +170,7 @@ router.post("/newgame", (request, response) => {
 router.get("/waitingroom", isAuthenticated, (request, response) => {
   console.log("----waitingroom----");
   let room = getRoomByName(request.query.room);
-  //console.log(result)
   let roomchat = getRoomChatByName(request.query.room);
-  //console.log(roomchat)
 
   let me = getPlayerByRoomAndName(request.query.room, request.session.user);
   if (me === undefined) {
@@ -233,7 +227,6 @@ router.get("/startgame", isAuthenticated, (request, response) => {
   io.in(request.query.room).emit("startgame", message);
 
   const query = querystring.stringify(request.query);
-  console.log(query);
   response.redirect("/game?" + query);
 });
 
@@ -253,9 +246,6 @@ router.get("/game", isAuthenticated, (request, response) => {
   if (roomchat !== undefined) {
     chats = roomchat.chats;
   }
-  console.log(curplayer.name);
-  console.log(player.name);
-  console.log(curplayer.name === player.name);
   response.render("game", {
     roomname: result.name,
     host: result.host,

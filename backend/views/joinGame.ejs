@@ -4,8 +4,10 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="/stylesheets/home.css" />
   </head>
-  <body>
-    <main>
+  <body class="signup-body">
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+    </ul>
       <div class="form-box">
         <form id="join-game" action="/joinGame" method="post">
           <label for="RoomName">Room Name:</label>
@@ -23,10 +25,7 @@
       <% if(error !== ""){ %>
       <div class="error-message">Error: <%= error %></div>
       <% } %>
-    </main>
 
     <footer class="footer"><%- include('partials/footer')%></footer>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/scripts/uno.js"></script>
   </body>
 </html>

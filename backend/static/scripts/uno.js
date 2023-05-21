@@ -5,21 +5,18 @@ socket.on("connect", function () {
 
 socket.on("startgame", function (event) {
   console.log("startgame");
-  console.log(event);
   message = JSON.parse(event);
   window.location.href = "/game?room="+message.room;
 });
 
 socket.on("update-cards-left", function (event) {
   console.log("update-cards-left");
-  console.log(event);
   message = JSON.parse(event);
   document.getElementById("cardsleft").innerHTML =
     message.cardsleft + " cards left";
 });
 socket.on("chat", function (event) {
   console.log("chat");
-  console.log(event);
   message = JSON.parse(event);
   document.getElementById("chatbox").innerHTML +=
     '<div class="chattext">' + message.user + ": " + message.data + "</div>";
@@ -28,7 +25,6 @@ socket.on("chat", function (event) {
 });
 socket.on("waitroom-update", function (data) {
   console.log("waitroom-update");
-  console.log(data);
   room = JSON.parse(data);
 
   let players = "";
@@ -40,12 +36,9 @@ socket.on("waitroom-update", function (data) {
 });
 socket.on("gameroom-player-update", function (data) {
   console.log("gameroom-player-update");
-  console.log(data);
   room = JSON.parse(data);
 
   let x = sessionStorage.getItem("login");
-  console.log(x);
-
   let user = JSON.parse(x);
 
   let players = "";
@@ -65,7 +58,6 @@ socket.on("gameroom-player-update", function (data) {
 });
 socket.on("draw", function (event) {
   console.log("draw");
-  console.log(event);
   message = JSON.parse(event);
   const imgElement = document.createElement("img");
   imgElement.src = message.data.src;
@@ -84,9 +76,7 @@ socket.on("draw", function (event) {
 
 socket.on("discardcard", function (event) {
   console.log("from server: discardcard");
-  console.log(event);
   message = JSON.parse(event);
-  console.log(message);
   const imgElement = document.createElement("img");
   imgElement.src = message.cardimg;
   imgElement.style.width = "98px";
@@ -100,30 +90,22 @@ socket.on("discardcard", function (event) {
 
 socket.on("whosturn", function (event) {
   console.log("from server: whosturn");
-  console.log(event);
   message = JSON.parse(event);
-  console.log(message);
 
   var room = document.getElementById("room");
   let x = sessionStorage.getItem("login");
-  console.log(x);
 
   let user = JSON.parse(x);
   const btn = document.getElementById("drawbutton");
-  console.log(btn);
   if (user.username === message.player) {
-    console.log(user.username + " playing now")
     btn.disabled = false;
   } else {
     btn.disabled = true;
   }
-  console.log(btn);
   let cardArea = document.getElementById("cardarea");
   let childs = cardArea.children;
-  console.log(childs);
   for (let i = 0; i < childs.length; i++) {
     let el = childs[i];
-    console.log(el.getAttribute("disabled"));
     el.setAttribute("disabled", btn.disabled);
   }
 
@@ -132,9 +114,7 @@ socket.on("whosturn", function (event) {
       user: user.username,
       room: room.value,
     };
-    console.log("should I end turn?")
     socket.emit("shouldEndTurn", JSON.stringify(message), (response)=>{
-      console.log(response)
       if (response.status === 'yes') {
         socket.emit("endTurn", JSON.stringify(message));
       }
@@ -145,9 +125,7 @@ socket.on("whosturn", function (event) {
 
 socket.on("gameend", function (message) {
   let payload = JSON.parse(message);
-  console.log("from server: gameend");
   let x = sessionStorage.getItem("login");
-  console.log(x);
   let user = JSON.parse(x);
   if (user.username === payload.winner) {
     window.location.href = "/winScreen?room=" + payload.room;
@@ -162,11 +140,9 @@ function sendMessage(event) {
   var room = document.getElementById("room");
 
   let x = sessionStorage.getItem("login");
-  console.log(x);
 
   let user = JSON.parse(x);
 
-  console.log(inputMessage.value);
   const message = {
     event: "chat",
     data: inputMessage.value,
@@ -198,28 +174,20 @@ function drawCard() {
 
 function discardCard(img, imgsrc, id) {
   var room = document.getElementById("room");
-  console.log(img.getAttribute("disabled"));
   if (img.getAttribute("disabled") === 'true') 
     return;
 
-  console.log('-------');
-
   let x = sessionStorage.getItem("login");
   let user = JSON.parse(x);
-  console.log(user);
   
   socket.emit("candiscardcard", JSON.stringify({
       cardid: id,
       room: room.value,
       user: user.username,
     }), (response)=>{
-    console.log(response);
     if (response.status === 'yes') {
-      console.log('-------2');
-      console.log(id);
       let curDiscardCard = document.getElementById("discardimg");
       let discardCardId = curDiscardCard.getAttribute("cardid");
-      console.log("discardCardId:" + discardCardId);
       
       const message = {
         event: "discard",
@@ -233,12 +201,9 @@ function discardCard(img, imgsrc, id) {
     
       let cardArea = document.getElementById("cardarea");
       let childs = cardArea.children;
-      console.log(childs);
       for (let i = 0; i < childs.length; i++) {
         let el = childs[i];
-        console.log(el.getAttribute("cardid"));
         if (el.getAttribute("cardid") === id + "") {
-          console.log("discard card" + id);
           cardArea.removeChild(el);
           break;
         }
