@@ -1,7 +1,7 @@
 const http = require("http");
 const { Server } = require("socket.io");
 
-const { getPlayerByRoomAndName, updateRoomChat, getRoomByName, getNextPlayerByRoom } = require("../room");
+const { getPlayerByRoomAndName, updateRoomChat, getRoomByName, getNextPlayerByRoom, removeRoomByName } = require("../room");
 const { getCardsById, shuffle } = require("../deck");
 const initSockets = (app, sessionMiddleware) => {
   const server = http.createServer(app);
@@ -193,6 +193,7 @@ const handleDiscardCard = (io, socket, data) => {
     io.in(payload.room).emit("whosturn", message);
     io.in(payload.room).emit("gameroom-player-update", JSON.stringify(room));
   } else {
+    removeRoomByName(payload.room);
     message = {
       room: room.name,
       winner: me.name,
