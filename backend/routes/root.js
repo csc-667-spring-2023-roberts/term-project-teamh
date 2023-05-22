@@ -44,11 +44,11 @@ router.get("/", isAuthenticated, (request, response) => {
   });
 });
 router.get("/login", (_request, response) => {
-  response.render("login", { title: "Uno Game (Login)" });
+  response.render("login", { title: "Uno Game (Login)" , "error": ""});
 });
 
 router.get("/signUp", (_request, response) => {
-  response.render("signUp", { title: "Uno Game (signUp)" });
+  response.render("signUp", { title: "Uno Game (signUp)", "error": ""});
 });
 
 router.get("/createGame", (_request, response) => {

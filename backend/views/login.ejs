@@ -8,14 +8,26 @@
     <div class="centered-content">
       <ul class="nav-signup">
         <h1 class="uno-title">
-          <a href="/" onclick="window.location.href = this.href; return false;">UNO</a>
+          <a href="/" onclick="window.location.href = this.href; return false;"
+            >UNO</a
+          >
         </h1>
-        
       </ul>
-     </div>
+    </div>
     <div class="signUp-container">
-          
-      <form id="login-form" class="signup-form" action="/auth/login" method="post">
+      <div>
+        <% if (error !== "") { %>
+        <div class="error-message">Error: <%= error %></div>
+        <div class="error-message">
+          username or password is invalid.
+        <% } %>
+      </div>
+      <form
+        id="login-form"
+        class="signup-form"
+        action="/auth/login"
+        method="post"
+      >
         <h2>Login</h2>
         <label for="user">
           <em>Username:</em>
