@@ -12,11 +12,20 @@ router.get("/signup", (_request, response) => {
 
 router.post("/signup", async (request, response) => {
   const { username, email, password } = request.body;
-
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
   const hash = await bcrypt.hash(password, salt);
 
   try {
+    const {
+      idUserName,
+      emailUserName,
+      password: hashedPasswordUserName,
+    } = await Users.findByUsername(username);
+    const {
+      idEmail,
+      emailEmail,
+      password: hashedPasswordEmail,
+    } = await Users.findByEmail(username);
     const userId = await Users.create(username, email, hash);
     request.session.user = userId;
 
@@ -27,6 +36,7 @@ router.post("/signup", async (request, response) => {
       title: "Jrob's Term Project",
       username,
       email,
+      error: "An error occurred. Please try again.",
     });
   }
 });
@@ -39,28 +49,21 @@ router.post("/login", async (request, response) => {
   const { username, password } = request.body;
 
   try {
-    const { id, email, password: hashedPassword } = await Users.findByEmail(username);
-    
+    const {
+      id,
+      email,
+      password: hashedPassword,
+    } = await Users.findByUsername(username);
+
     // Compare the provided password with the hashed password in the database
     bcrypt.compare(password, hashedPassword.trim()).then(isValidUser => {
       if (isValidUser) {
-        request.session.regenerate(function (err) {
-          if (err) next(err);
-    
-          // store user information in session, typically a user id
-          request.session.user = {
-            id,
-            username,
-            email,
-          };
-  
-          // save the session before redirection to ensure page
-          // load does not happen before session is saved
-          request.session.save(function (err) {
-            if (err) return next(err);
-            response.redirect("/");
-          });
-        });        
+        request.session.user = {
+          id,
+          username,
+          email,
+        };
+        response.redirect("/");
       } else {
         console.log("Invalid username or password");
         // If the passwords did not match, render the login page again with an error message
@@ -75,10 +78,13 @@ router.post("/login", async (request, response) => {
   } catch (error) {
     // Catch any errors that occurred while trying to find the user
     console.log({ error });
-    response.render("login", { title: "Uno Game (Login)", username, error: "An error occurred. Please try again." });
+    response.render("login", {
+      title: "Uno Game (Login)",
+      username,
+      error: "An error occurred. Please try again.",
+    });
   }
 });
-
 
 router.get("/logout", (request, response) => {
   request.session.destroy((error) => {
