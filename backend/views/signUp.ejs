@@ -15,7 +15,12 @@
     </ul>
    </div>
     <div class="signUp-container">
-      
+      <div>
+        <% if (error !== "") { %>
+        <div class="error-message">Error: <%= error %></div>
+        <div class="error-message">
+          username or email already exist.
+        <% } %>
       <form class="signup-form" method="post" action="/auth/signup">
         <h2>Sign up </h2>
         <label>
