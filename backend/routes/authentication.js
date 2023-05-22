@@ -44,12 +44,23 @@ router.post("/login", async (request, response) => {
     // Compare the provided password with the hashed password in the database
     bcrypt.compare(password, hashedPassword.trim()).then(isValidUser => {
       if (isValidUser) {
-        request.session.user = {
-          id,
-          username,
-          email,
-        };
-        response.redirect("/");
+        request.session.regenerate(function (err) {
+          if (err) next(err);
+    
+          // store user information in session, typically a user id
+          request.session.user = {
+            id,
+            username,
+            email,
+          };
+  
+          // save the session before redirection to ensure page
+          // load does not happen before session is saved
+          request.session.save(function (err) {
+            if (err) return next(err);
+            response.redirect("/");
+          });
+        });        
       } else {
         console.log("Invalid username or password");
         // If the passwords did not match, render the login page again with an error message

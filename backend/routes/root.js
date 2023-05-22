@@ -38,7 +38,7 @@ router.use((request, response, next) => {
 router.get("/", isAuthenticated, (request, response) => {
   response.render("home", {
     title: "Welcome to Uno!",
-    user: request.session.user,
+    user: request.session.user.username,
     openrooms: rooms,
     login: true,
   });
@@ -78,7 +78,7 @@ router.post("/joingame", (request, response) => {
       );
     } else {
       room.players.push({
-        name: request.session.user,
+        name: request.session.user.username,
         hands: [],
       });
       const query = querystring.stringify({ room: request.body.room });
@@ -95,26 +95,6 @@ router.get("/", function (_request, response) {
     openrooms: rooms,
   });
 });
-
-router.post(
-  "/login",
-  express.urlencoded({ extended: false }),
-  function (request, response, next) {
-    request.session.regenerate(function (err) {
-      if (err) next(err);
-
-      // store user information in session, typically a user id
-      request.session.user = request.body.user;
-
-      // save the session before redirection to ensure page
-      // load does not happen before session is saved
-      request.session.save(function (err) {
-        if (err) return next(err);
-        response.redirect("/");
-      });
-    });
-  }
-);
 
 // Root route for rules page
 router.get("/rules", (request, response) => {
@@ -146,8 +126,8 @@ router.post("/newgame", isAuthenticated, (request, response) => {
     name: request.body.roomname,
     password: request.body.password,
     numberOfPlayers: request.body.numberPlayer,
-    host: request.session.user,
-    players: [{ name: request.session.user, hands: [] }],
+    host: request.session.user.username,
+    players: [{ name: request.session.user.username, hands: [] }],
     currentplayer: 0,
     discardcard: {},
     reverse: false,
@@ -172,7 +152,7 @@ router.get("/waitingroom", isAuthenticated, (request, response) => {
   let room = getRoomByName(request.query.room);
   let roomchat = getRoomChatByName(request.query.room);
 
-  let me = getPlayerByRoomAndName(request.query.room, request.session.user);
+  let me = getPlayerByRoomAndName(request.query.room, request.session.user.username);
   if (me === undefined) {
     response.redirect("/");
   } else {
@@ -235,7 +215,7 @@ router.get("/game", isAuthenticated, (request, response) => {
 
   let result = getRoomByName(request.query.room);
 
-  player = getPlayerByRoomAndName(request.query.room, request.session.user);
+  player = getPlayerByRoomAndName(request.query.room, request.session.user.username);
 
   let roomchat = getRoomChatByName(request.query.room);
 
