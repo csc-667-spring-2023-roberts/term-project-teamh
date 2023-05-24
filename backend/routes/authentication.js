@@ -15,29 +15,43 @@ router.post("/signup", async (request, response) => {
   const salt = await bcrypt.genSalt(SALT_ROUNDS);
   const hash = await bcrypt.hash(password, salt);
 
+  let userexist = false;
+  let emailexist = false;
   try {
     const {
       idUserName,
       emailUserName,
       password: hashedPasswordUserName,
     } = await Users.findByUsername(username);
+    userexist = true;
+  } catch (error) {
+  }
+
+  try {
     const {
       idEmail,
       emailEmail,
       password: hashedPasswordEmail,
-    } = await Users.findByEmail(username);
-    const userId = await Users.create(username, email, hash);
-    request.session.user = userId;
-
-    response.redirect("/");
+    } = await Users.findByEmail(email);
+    emailexist = true;
   } catch (error) {
-    console.log({ error });
+
+  }
+  if (userexist || emailexist) {
     response.render("signup", {
       title: "Jrob's Term Project",
       username,
       email,
       error: "An error occurred. Please try again.",
     });
+  } else {
+    const userId = await Users.create(username, email, hash);
+    request.session.user = {
+      userId,
+      username,
+      email,
+    };
+    response.redirect("/");
   }
 });
 
